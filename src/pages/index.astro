@@ -1,0 +1,31 @@
+---
+import Main from "../layouts/Main.astro";
+import Hero from "../components/home/hero/Hero.astro";
+import Banner from "../components/home/banner/Banner.astro";
+import WhatWeDo from "../components/home/serviceSummary/WhatWeDo.astro";
+---
+
+<Main>
+  <Hero />
+  <Banner
+    primaryText="Compassionate Care. Precise Billing. Better Results."
+    secondaryText="Your Practice Thrives. Your Patients Win."
+    color="#0b2b3d"
+    justify="center"
+    icon="/assets/icons/heart.svg"
+  />
+  <WhatWeDo />
+  <Banner
+    primaryText="Ready to Improve Your Cash Flow?"
+    secondaryText="Let's talk about how we can make your business thrive."
+    textAlign="flex-start"
+    color="#5a7964"
+    justify="space-between"
+    cta={{
+      text: "SCHEDULE A FREE CONSULTATION",
+      href: "/test",
+      variant: "secondary",
+    }}
+    icon="/assets/icons/peopleGroup.svg"
+  />
+</Main>

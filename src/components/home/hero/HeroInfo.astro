@@ -1,0 +1,91 @@
+---
+import Button from "../../global/Button.astro";
+---
+
+<style>
+  .hero-block {
+    /* width: 50%; */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 4%;
+    gap: 2vh;
+
+    .header {
+      h1 {
+        font-size: 5ch;
+        font-weight: 500;
+        width: 100%;
+        text-align: left;
+        margin: 0;
+
+        &:nth-child(2) {
+          color: var(--primary-green);
+        }
+      }
+    }
+
+    .divider {
+      width: 30%;
+      border: 2px solid var(--primary-gold);
+    }
+
+    .sub-header {
+      width: 75%;
+
+      h2 {
+        margin: 0;
+        font-weight: 500;
+        text-align: left;
+        font-family: var(--font-noto-serif);
+      }
+    }
+
+    .cta-section {
+      p {
+        font-size: 18px;
+      }
+    }
+
+    .cta-buttons {
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    @media (min-width: 1600px) {
+      width: 50%;
+      padding: 0 8%;
+      gap: 2vh;
+    }
+  }
+</style>
+
+<section class="hero-block">
+  <section class="header">
+    <h1>Turning Claims</h1>
+    <h1>Into Consistent Cash Flow</h1>
+  </section>
+  <div class="divider"></div>
+  <section class="sub-header">
+    <h2>
+      Reliable Medical Billing Solutions That Help Your Practice Get Paid Faster
+    </h2>
+  </section>
+  <section class="cta-section">
+    <p>
+      At TrueCare RCM360 Solutions, we take the complexities of billing off your
+      plate so you can focus on what matters most, your patients.
+    </p>
+  </section>
+  <section class="cta-buttons">
+    <Button
+      cta="Get a Free Consultation"
+      ,
+      href="/test"
+      ,
+      icon="/assets/icons/calendar.svg"
+    />
+    <Button cta="Our Services" variant="secondary" />
+  </section>
+</section>

@@ -1,0 +1,32 @@
+:root {
+  --primary-green: #5a7964;
+  --primary-navy: #09213b;
+  --primary-gold: #c7a056;
+  --primary-grey: #c2c2c2;
+  --primary-white: #f8f8f8;
+  --header-size: 12vh;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-noto-sans);
+}
+html,
+body {
+  height: 100%;
+  color: (var(--primary-navy));
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin-bottom: 16px;
+}
+h1 {
+  font-family: var(--font-noto-serif);
+}

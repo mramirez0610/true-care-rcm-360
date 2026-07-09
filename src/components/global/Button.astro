@@ -1,0 +1,50 @@
+---
+// const { cta, color = "#f8f8f8", icon, href="#" } = Astro.props;
+const { cta, href = "#", icon, variant = "primary" } = Astro.props;
+---
+
+<style>
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5%;
+    width: 250px;
+    height: 50px;
+    border-radius: 10px;
+    border: 2px solid var(--primary-navy);
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    /* font-size: 0.95em; */
+    text-transform: uppercase;
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
+  }
+
+  .button:not(.button--secondary) {
+    background: var(--primary-green);
+    color: var(--primary-white);
+    border-color: var(--primary-green);
+  }
+
+  .button--secondary {
+    background: var(--primary-white);
+    color: var(--primary-navy);
+    border-color: var(--primary-navy);
+  }
+</style>
+
+<a href={href}>
+  <button
+    class={`button ${variant === "secondary" ? "button--secondary" : ""}`}
+  >
+    {
+      icon ? (
+        <img src={icon} alt="" class="cta-banner-icon" />
+      ) : (
+        <slot name="icon" />
+      )
+    }
+    <span>{cta}</span>
+  </button>
+</a>

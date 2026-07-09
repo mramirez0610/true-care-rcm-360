@@ -1,0 +1,30 @@
+---
+import HeroImg from "./HeroImg.astro";
+import HeroInfo from "./HeroInfo.astro";
+---
+
+<style>
+  header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    /* justify-content: space-between; */
+    justify-content: center;
+    overflow: hidden;
+    z-index: 1;
+    /* max-width: 1200px; */
+
+    /* gap: clamp(2rem, 4vw, 4rem); */
+
+    /* min-height: calc(100svh - var(--header-height) - var(--header-margin-top)); */
+
+    @media (min-width: 1600px) {
+      height: 55%;
+    }
+  }
+</style>
+
+<header>
+  <HeroInfo />
+  <HeroImg />
+</header>

@@ -1,0 +1,106 @@
+---
+const {
+  primaryText = "",
+  secondaryText = "",
+  color = "#0b2b3d",
+  colorText = "#f8f8f8",
+  textAlign = "center",
+  justify = "center", // "flex-start" | "center" | "flex-end" | "space-between"
+  cta = null,
+  icon = null,
+} = Astro.props;
+import Button from "../../global/Button.astro";
+---
+
+<div
+  class="cta-banner"
+  role="region"
+  style={`--bg: ${color}; --fg: ${colorText}; --justify: ${justify};`}
+>
+  <div class="cta-banner-content">
+    <div class="cta-banner-left">
+      {
+        icon ? (
+          <img src={icon} alt="" class="cta-banner-icon" />
+        ) : (
+          <slot name="icon" />
+        )
+      }
+      <div class="cta-banner-text" style={`--txt-align: ${textAlign}`}>
+        <slot />
+        <h1 class="primary-text">{primaryText}</h1>
+        <div class="secondary-text">{secondaryText}</div>
+      </div>
+    </div>
+
+    {
+      cta && (
+        <Button
+          cta={cta.text}
+          href={cta.href || "#"}
+          variant={cta.variant}
+          icon={cta.icon}
+        />
+      )
+    }
+  </div>
+</div>
+
+<style>
+  .cta-banner {
+    width: 100%;
+    background: var(--bg);
+    color: var(--fg);
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem 0;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .cta-banner-content {
+    width: 60%;
+    max-width: 1200px;
+    display: flex;
+    align-items: center;
+    justify-content: var(--justify);
+    gap: 1rem;
+    padding: 0 1rem;
+
+    .cta-banner-text {
+      /* line-height: 1.2; */
+      display: flex;
+      flex-direction: column;
+      align-items: var(--txt-align);
+      justify-content: space-evenly;
+      gap: 0.5vh;
+
+      h1 {
+        font-size: 1.15em;
+        margin: 0;
+      }
+    }
+  }
+
+  .cta-banner-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .cta-banner-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 720px) {
+    .cta-banner-content {
+      width: 100%;
+      flex-direction: column;
+      gap: 0.5rem;
+      text-align: center;
+    }
+  }
+</style>

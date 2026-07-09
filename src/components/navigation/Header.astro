@@ -1,0 +1,32 @@
+---
+import Navigation from "./Navigation.astro";
+import Button from "../global/Button.astro";
+import Logo from "./Logo.astro";
+---
+
+<style lang="scss">
+  header {
+    width: 100%;
+    height: var(--header-size);
+    background-color: var(--primary-white);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    position: sticky;
+    top: 0;
+    left: 0;
+
+    box-shadow:
+      0px 1px 3px 3px rgba(0, 0, 0, 0.3),
+      0px 4px 8px 3px rgba(0, 0, 0, 0.15);
+    // padding: 2% 5%;
+  }
+</style>
+
+<header>
+  <Logo />
+  <Navigation />
+  <Button cta="GET A FREE CONSULTATION" icon="/assets/icons/calendar.svg" />
+</header>
