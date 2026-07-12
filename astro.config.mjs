@@ -1,6 +1,10 @@
 // @ts-check
 import { defineConfig, fontProviders } from "astro/config";
 
+import netlify from "@astrojs/netlify";
+
+import react from "@astrojs/react";
+
 // https://astro.build/config
 export default defineConfig({
   fonts: [
@@ -15,4 +19,7 @@ export default defineConfig({
       cssVariable: "--font-noto-serif",
     },
   ],
+
+  adapter: netlify(),
+  integrations: [react()],
 });
