@@ -12,40 +12,6 @@ const {
 import Button from "../../global/Button.astro";
 ---
 
-<div
-  class="cta-banner"
-  role="region"
-  style={`--bg: ${color}; --fg: ${colorText}; --justify: ${justify};`}
->
-  <div class="cta-banner-content">
-    <div class="cta-banner-left">
-      {
-        icon ? (
-          <img src={icon} alt="" class="cta-banner-icon" />
-        ) : (
-          <slot name="icon" />
-        )
-      }
-      <div class="cta-banner-text" style={`--txt-align: ${textAlign}`}>
-        <slot />
-        <h1 class="primary-text">{primaryText}</h1>
-        <div class="secondary-text">{secondaryText}</div>
-      </div>
-    </div>
-
-    {
-      cta && (
-        <Button
-          cta={cta.text}
-          href={cta.href || "#"}
-          variant={cta.variant}
-          icon={cta.icon}
-        />
-      )
-    }
-  </div>
-</div>
-
 <style>
   .cta-banner {
     width: 100%;
@@ -104,3 +70,37 @@ import Button from "../../global/Button.astro";
     }
   }
 </style>
+
+<div
+  class="cta-banner"
+  role="region"
+  style={`--bg: ${color}; --fg: ${colorText}; --justify: ${justify};`}
+>
+  <div class="cta-banner-content">
+    <div class="cta-banner-left">
+      {
+        icon ? (
+          <img src={icon} alt="" class="cta-banner-icon" />
+        ) : (
+          <slot name="icon" />
+        )
+      }
+      <div class="cta-banner-text" style={`--txt-align: ${textAlign}`}>
+        <slot />
+        <h1 class="primary-text">{primaryText}</h1>
+        <div class="secondary-text">{secondaryText}</div>
+      </div>
+    </div>
+
+    {
+      cta && (
+        <Button
+          cta={cta.text}
+          href={cta.href || "#"}
+          variant={cta.variant}
+          icon={cta.icon}
+        />
+      )
+    }
+  </div>
+</div>

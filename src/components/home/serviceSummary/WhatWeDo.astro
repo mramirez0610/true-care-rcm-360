@@ -3,17 +3,17 @@ const items = [
   {
     title: "Medical Billing & Coding",
     description: "Accurate coding, clean claims, and faster reimbursement.",
-    icon: "✓",
+    icon: "/assets/icons/clipboard.svg",
   },
   {
     title: "Claims Submission",
     description: "Timely submission and follow-up so payments arrive sooner.",
-    icon: "✓",
+    icon: "/assets/icons/checklist.svg",
   },
   {
     title: "Denial Management",
     description: "Reduce denials, recover revenue, and protect your cash flow.",
-    icon: "✓",
+    icon: "/assets/icons/cash.svg",
   },
 ];
 ---
@@ -24,17 +24,21 @@ const items = [
     background: var(--primary-white);
   }
 
-  .what-we-do__inner {
+  .what-we-do-inner {
     max-width: 1180px;
     margin: 0 auto;
+
+    /* changes section to row */
+    /* display: flex;
+    gap: 5%; */
   }
 
-  .what-we-do__content {
+  .what-we-do-content {
     max-width: 540px;
     margin-bottom: 2rem;
   }
 
-  .what-we-do__eyebrow {
+  .what-we-do-eyebrow {
     display: inline-block;
     margin-bottom: 0.75rem;
     color: var(--primary-green);
@@ -43,14 +47,14 @@ const items = [
     text-transform: uppercase;
   }
 
-  .what-we-do__title {
+  .what-we-do-title {
     margin: 0;
     font-size: 2.75rem;
     line-height: 1.05;
     color: var(--primary-navy);
   }
 
-  .what-we-do__divider {
+  .what-we-do-divider {
     width: 10%;
     border: 2px solid var(--primary-gold);
     background: var(--primary-gold);
@@ -58,20 +62,23 @@ const items = [
     border-radius: 999px;
   }
 
-  .what-we-do__text {
+  .what-we-do-text {
     margin: 0;
     color: var(--primary-navy);
     line-height: 1.8;
     font-size: 1rem;
   }
 
-  .what-we-do__grid {
+  .what-we-do-grid {
     display: grid;
     gap: 1.25rem;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+
+    /* changes section to row */
+    /* grid-auto-flow: column; */
   }
 
-  .what-we-do__card {
+  .what-we-do-card {
     background: white;
     /* border: 1px solid #dbe2e8; */
     border: 1px solid var(--primary-green);
@@ -80,7 +87,7 @@ const items = [
     box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
   }
 
-  .what-we-do__icon {
+  .what-we-do-icon {
     width: 3rem;
     height: 3rem;
     display: grid;
@@ -90,15 +97,16 @@ const items = [
     color: #1f4f3e;
     font-size: 1.4rem;
     margin-bottom: 1rem;
+    padding: 0.5rem;
   }
 
-  .what-we-do__card-title {
+  .what-we-do-card-title {
     margin: 0 0 0.75rem;
     font-size: 1.05rem;
     color: #102a43;
   }
 
-  .what-we-do__card-text {
+  .what-we-do-card-text {
     margin: 0;
     color: #64748b;
     line-height: 1.75;
@@ -107,24 +115,24 @@ const items = [
 </style>
 
 <section class="what-we-do">
-  <div class="what-we-do__inner">
-    <div class="what-we-do__content">
-      <span class="what-we-do__eyebrow">What We Can Do</span>
-      <h2 class="what-we-do__title">For You</h2>
-      <div class="what-we-do__divider"></div>
-      <p class="what-we-do__text">
+  <div class="what-we-do-inner">
+    <div class="what-we-do-content">
+      <span class="what-we-do-eyebrow">What We Can Do</span>
+      <h2 class="what-we-do-title">For You</h2>
+      <div class="what-we-do-divider"></div>
+      <p class="what-we-do-text">
         Reliable billing support designed to help your practice reduce denials,
         improve cash flow, and spend more time with patients.
       </p>
     </div>
 
-    <div class="what-we-do__grid">
+    <div class="what-we-do-grid">
       {
         items.map((item) => (
-          <article class="what-we-do__card">
-            <div class="what-we-do__icon">{item.icon}</div>
-            <h3 class="what-we-do__card-title">{item.title}</h3>
-            <p class="what-we-do__card-text">{item.description}</p>
+          <article class="what-we-do-card">
+            <img src={item.icon} class="what-we-do-icon" />
+            <h3 class="what-we-do-card-title">{item.title}</h3>
+            <p class="what-we-do-card-text">{item.description}</p>
           </article>
         ))
       }
