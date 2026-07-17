@@ -1,0 +1,73 @@
+---
+import { Icon } from "astro-icon/components";
+---
+
+<style>
+  .mobile-button {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 0.375rem;
+    background: transparent;
+    border: none;
+    border-radius: 0.25rem;
+    color: var(--primary-navy);
+
+    cursor: pointer;
+    font-size: 2rem;
+    line-height: 1;
+  }
+
+  .mobile-button:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  @media (max-width: 768px) {
+    .mobile-button {
+      display: inline-flex;
+      z-index: 12;
+    }
+  }
+</style>
+
+<button
+  type="button"
+  aria-expanded="false"
+  aria-controls="main-menu"
+  aria-label="Open main menu"
+  class="mobile-button"
+  id="mobile-button"
+>
+  <Icon name="gg:menu" aria-hidden="true" />
+</button>
+
+<script>
+  const menuButton =
+    document.querySelector<HTMLButtonElement>("#mobile-button");
+
+  const closeMenu = () => {
+    menuButton?.setAttribute("aria-expanded", "false");
+    menuButton?.setAttribute("aria-label", "Open main menu");
+  };
+
+  menuButton?.addEventListener("click", () => {
+    const isExpanded = menuButton.getAttribute("aria-expanded") === "true";
+
+    menuButton.setAttribute("aria-expanded", String(!isExpanded));
+    menuButton.setAttribute(
+      "aria-label",
+      isExpanded ? "Open main menu" : "Close main menu",
+    );
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (
+      event.key === "Escape" &&
+      menuButton?.getAttribute("aria-expanded") === "true"
+    ) {
+      closeMenu();
+      menuButton.focus();
+    }
+  });
+</script>
