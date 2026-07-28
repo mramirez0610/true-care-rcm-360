@@ -1,0 +1,179 @@
+---
+const reasons = [
+  {
+    title: "Reliable Communication",
+    description: "Stay informed with clear updates and responsive support.",
+  },
+  {
+    title: "Clean Claim Focus",
+    description: "We work to reduce errors, rejections, and avoidable delays.",
+  },
+  {
+    title: "Practice-Centered Support",
+    description:
+      "Your billing process is handled with your workflow and goals in mind.",
+  },
+];
+---
+
+<style>
+  .why-us {
+    padding: 5rem 1.5rem;
+    background:
+      linear-gradient(rgb(0 0 0 / 62%), rgb(0 0 0 / 62%)),
+      url("/img/WhyUs.jpg") center / cover no-repeat;
+
+    .container {
+      width: min(100%, 1180px);
+      margin: 0 auto;
+    }
+
+    .intro {
+      max-width: 860px;
+      margin: 0 auto 2.25rem;
+      text-align: center;
+
+      h2 {
+        margin: 0;
+        color: var(--primary-white);
+        font-family: var(--font-noto-serif);
+        font-size: clamp(2rem, 3.4vw, 3rem);
+        line-height: 1.1;
+      }
+
+      p {
+        margin: 0;
+        color: var(--primary-white);
+        font-size: clamp(0.95rem, 1.2vw, 1.08rem);
+        line-height: 1.65;
+      }
+    }
+
+    .title-divider {
+      width: 76px;
+      height: 3px;
+      margin: 1rem auto 1.25rem;
+      border-radius: 999px;
+      background: var(--primary-gold);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      display: flex;
+      min-height: 230px;
+      padding: 1.75rem;
+      flex-direction: column;
+      align-items: flex-start;
+      border: 1px solid var(--primary-green);
+      border-radius: 10px;
+      background: var(--primary-white);
+      box-shadow: 0 12px 28px rgba(9, 33, 59, 0.12);
+      color: var(--primary-navy);
+
+      h3 {
+        margin: 0;
+        font-family: var(--font-noto-serif);
+        font-size: clamp(1.15rem, 1.55vw, 1.4rem);
+        line-height: 1.25;
+      }
+
+      p {
+        margin: 0 0 1.5rem;
+        color: var(--primary-navy);
+        font-size: 0.98rem;
+        line-height: 1.55;
+      }
+
+      a {
+        margin-top: auto;
+        color: var(--primary-navy);
+        font-weight: 700;
+        text-underline-offset: 0.2em;
+
+        &:hover {
+          color: var(--primary-green);
+        }
+
+        &:focus-visible {
+          border-radius: 2px;
+          outline: 2px solid var(--primary-gold);
+          outline-offset: 4px;
+        }
+      }
+    }
+
+    .card-divider {
+      width: 54px;
+      height: 3px;
+      margin: 0.85rem 0 1rem;
+      border-radius: 999px;
+      background: var(--primary-gold);
+    }
+  }
+
+  @media (max-width: 800px) {
+    .why-us {
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        min-height: 0;
+      }
+    }
+  }
+
+  @media (max-width: 640px) {
+    .why-us {
+      padding: 4rem 1rem;
+
+      .intro {
+        text-align: left;
+      }
+
+      .intro {
+        margin-bottom: 1.75rem;
+      }
+
+      .card {
+        padding: 1.5rem;
+      }
+    }
+  }
+</style>
+
+<section class="why-us" id="why-us" aria-labelledby="why-us-title">
+  <div class="container">
+    <header class="intro">
+      <h2 id="why-us-title">Why Practices Choose TrueCare</h2>
+      <div class="title-divider" aria-hidden="true"></div>
+      <p>
+        Billing support you can feel confident in. Your practice deserves
+        billing support that is accurate, organized, and handled with care.
+        TrueCare RCM360 helps simplify the revenue cycle so you can focus on
+        your patients.
+      </p>
+    </header>
+
+    <div class="cards">
+      {
+        reasons.map((reason) => (
+          <article class="card">
+            <h3>{reason.title}</h3>
+            <div class="card-divider" aria-hidden="true" />
+            <p>{reason.description}</p>
+            <a href="/why-us">
+              Learn More
+              <span aria-hidden="true"> &gt;</span>
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
