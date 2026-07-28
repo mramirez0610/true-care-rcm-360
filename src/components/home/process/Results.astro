@@ -1,0 +1,148 @@
+---
+const results = [
+  {
+    title: "Cleaner Claims",
+    description: "Reduce billing errors before they become denials.",
+    icon: "/assets/icons/clipboard.svg",
+  },
+  {
+    title: "Fewer Delays",
+    description: "Keep claims moving with timely submission and follow-up.",
+    icon: "/assets/icons/clock.svg",
+  },
+  {
+    title: "Better Revenue Visibility",
+    description: "Know what is paid, pending, and needs attention.",
+    icon: "/assets/icons/cash.svg",
+  },
+  {
+    title: "More Time for Clients",
+    description: "Spend less time on billing and more time with patients.",
+    icon: "/assets/icons/heart2.svg",
+  },
+];
+---
+
+<style>
+  .results {
+    margin-top: 5rem;
+    color: var(--primary-navy);
+
+    .intro {
+      max-width: 720px;
+      margin: 0 auto 2rem;
+      text-align: center;
+
+      h2 {
+        margin: 0;
+        font-family: var(--font-noto-serif);
+        font-size: clamp(2rem, 3.2vw, 2.75rem);
+        line-height: 1.1;
+      }
+
+      p {
+        margin: 0;
+        font-size: clamp(0.95rem, 1.2vw, 1.08rem);
+        line-height: 1.65;
+      }
+    }
+
+    .title-divider {
+      width: 76px;
+      height: 3px;
+      margin: 1rem auto 1.25rem;
+      border-radius: 999px;
+      background: var(--primary-gold);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      display: flex;
+      min-height: 210px;
+      padding: 1.5rem 1.25rem;
+      flex-direction: column;
+      align-items: center;
+      border: 1px solid var(--primary-green);
+      border-radius: 8px;
+      background: var(--primary-white);
+      box-shadow: 0 10px 22px rgb(9 33 59 / 12%);
+      text-align: center;
+
+      img {
+        width: 3.25rem;
+        height: 3.25rem;
+        margin-bottom: 1rem;
+        object-fit: contain;
+      }
+
+      h3 {
+        margin: 0 0 0.65rem;
+        color: var(--primary-navy);
+        font-size: clamp(0.82rem, 1vw, 0.95rem);
+        line-height: 1.3;
+        text-transform: uppercase;
+
+        span {
+          color: var(--primary-green);
+        }
+      }
+
+      p {
+        margin: 0;
+        color: var(--primary-navy);
+        font-size: 0.9rem;
+        line-height: 1.45;
+      }
+    }
+  }
+
+  @media (max-width: 760px) {
+    .results {
+      margin-top: 4rem;
+
+      .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  }
+
+  @media (max-width: 500px) {
+    .results {
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        min-height: 0;
+      }
+    }
+  }
+</style>
+
+<section class="results" aria-labelledby="results-title">
+  <header class="intro">
+    <h2 id="results-title">Results You Can Expect</h2>
+    <div class="title-divider" aria-hidden="true"></div>
+    <p>
+      Reliable billing support means fewer interruptions, faster reimbursements,
+      and more time to focus on patient care.
+    </p>
+  </header>
+
+  <div class="cards">
+    {
+      results.map((result) => (
+        <article class="card">
+          <img src={result.icon} alt="" />
+          <h3>{result.title}</h3>
+          <p>{result.description}</p>
+        </article>
+      ))
+    }
+  </div>
+</section>
