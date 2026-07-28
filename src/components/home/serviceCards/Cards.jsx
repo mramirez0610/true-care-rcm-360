@@ -83,14 +83,28 @@ const services = [
   },
 ];
 
-const getCardPosition = (depth, compact = false) => {
-  if (compact) {
+const getCardPosition = (depth, layout = "desktop") => {
+  if (layout === "compact") {
     return {
       x: 0,
       y: 0,
       rotation: 0,
       scale: 1,
       opacity: depth === 0 ? 1 : 0,
+      zIndex: services.length - depth,
+    };
+  }
+
+  if (layout === "tablet") {
+    return {
+      // x: depth * 7,
+      // y: depth * -9,
+      // rotation: depth * 1.45,
+      x: depth * 2,
+      y: depth * -12,
+      rotation: depth * 2,
+      scale: 1 - depth * 0.006,
+      opacity: depth < 4 ? 1 : 0,
       zIndex: services.length - depth,
     };
   }
@@ -117,16 +131,21 @@ export default function Cards() {
 
     media.add(
       {
-        desktop: "(min-width: 641px)",
+        desktop: "(min-width: 961px)",
+        tablet: "(min-width: 641px) and (max-width: 960px)",
         compact: "(max-width: 640px)",
       },
       (context) => {
-        const compact = context.conditions.compact;
+        const layout = context.conditions.compact
+          ? "compact"
+          : context.conditions.tablet
+            ? "tablet"
+            : "desktop";
 
         deckOrder.current.forEach((serviceIndex, depth) => {
           gsap.set(
             cardRefs.current[serviceIndex],
-            getCardPosition(depth, compact),
+            getCardPosition(depth, layout),
           );
         });
       },
@@ -143,7 +162,11 @@ export default function Cards() {
 
     if (selectedIndex === currentIndex || isAnimating.current) return;
 
-    const compact = window.matchMedia("(max-width: 640px)").matches;
+    const layout = window.matchMedia("(max-width: 640px)").matches
+      ? "compact"
+      : window.matchMedia("(max-width: 960px)").matches
+        ? "tablet"
+        : "desktop";
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -161,7 +184,7 @@ export default function Cards() {
       nextOrder.forEach((serviceIndex, depth) => {
         gsap.set(
           cardRefs.current[serviceIndex],
-          getCardPosition(depth, compact),
+          getCardPosition(depth, layout),
         );
       });
       deckOrder.current = nextOrder;
@@ -181,11 +204,14 @@ export default function Cards() {
 
     timeline.current = animation;
 
-    if (compact) {
+    if (layout === "compact") {
       animation
         .to(outgoingCard, { autoAlpha: 0, y: 16, duration: 0.22 })
-        .set(outgoingCard, getCardPosition(services.length - 1, true))
-        .set(incomingCard, { ...getCardPosition(0, true), y: -12 })
+        .set(outgoingCard, getCardPosition(services.length - 1, "compact"))
+        .set(incomingCard, {
+          ...getCardPosition(0, "compact"),
+          y: -12,
+        })
         .to(incomingCard, { autoAlpha: 1, y: 0, duration: 0.34 });
       return;
     }
@@ -206,23 +232,31 @@ export default function Cards() {
         {
           x: (_, element) => {
             const serviceIndex = cardRefs.current.indexOf(element);
-            return getCardPosition(nextOrder.indexOf(serviceIndex)).x;
+            return getCardPosition(nextOrder.indexOf(serviceIndex), layout).x;
           },
           y: (_, element) => {
             const serviceIndex = cardRefs.current.indexOf(element);
-            return getCardPosition(nextOrder.indexOf(serviceIndex)).y;
+            return getCardPosition(nextOrder.indexOf(serviceIndex), layout).y;
           },
           rotation: (_, element) => {
             const serviceIndex = cardRefs.current.indexOf(element);
-            return getCardPosition(nextOrder.indexOf(serviceIndex)).rotation;
+            return getCardPosition(nextOrder.indexOf(serviceIndex), layout)
+              .rotation;
           },
           scale: (_, element) => {
             const serviceIndex = cardRefs.current.indexOf(element);
-            return getCardPosition(nextOrder.indexOf(serviceIndex)).scale;
+            return getCardPosition(nextOrder.indexOf(serviceIndex), layout)
+              .scale;
+          },
+          opacity: (_, element) => {
+            const serviceIndex = cardRefs.current.indexOf(element);
+            return getCardPosition(nextOrder.indexOf(serviceIndex), layout)
+              .opacity;
           },
           zIndex: (_, element) => {
             const serviceIndex = cardRefs.current.indexOf(element);
-            return getCardPosition(nextOrder.indexOf(serviceIndex)).zIndex;
+            return getCardPosition(nextOrder.indexOf(serviceIndex), layout)
+              .zIndex;
           },
           duration: 0.52,
           stagger: 0.025,
@@ -244,12 +278,20 @@ export default function Cards() {
       .to(
         outgoingCard,
         {
-          ...getCardPosition(services.length - 1),
+          ...getCardPosition(services.length - 1, layout),
           duration: 0.48,
           ease: "power3.out",
         },
         0.34,
       );
+  };
+
+  const selectPreviousService = () => {
+    selectService((activeIndex - 1 + services.length) % services.length);
+  };
+
+  const selectNextService = () => {
+    selectService((activeIndex + 1) % services.length);
   };
 
   return (
@@ -287,6 +329,41 @@ export default function Cards() {
         </div>
 
         <div className="services-preview">
+          <div
+            className="services-mobile-selector"
+            role="group"
+            aria-label="Choose a service"
+          >
+            <button
+              type="button"
+              className="services-selector-arrow"
+              onClick={selectPreviousService}
+              aria-label="Previous service"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m15 18-6-6 6-6" />
+              </svg>
+            </button>
+
+            <p className="services-selector-label" aria-live="polite">
+              <span className="services-selector-number">
+                {services[activeIndex].number}
+              </span>
+              {services[activeIndex].title}
+            </p>
+
+            <button
+              type="button"
+              className="services-selector-arrow"
+              onClick={selectNextService}
+              aria-label="Next service"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </button>
+          </div>
+
           <div className="services-deck">
             {services.map((service, index) => {
               const isActive = index === activeIndex;
