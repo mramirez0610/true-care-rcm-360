@@ -1,0 +1,315 @@
+---
+import Results from "./Results.astro";
+
+const steps = [
+  {
+    title: "Consult",
+    description:
+      "We learn about your practice, billing needs, and current challenges.",
+    icon: "/assets/icons/process/chat.svg",
+  },
+  {
+    title: "Review",
+    description:
+      "We identify claim issues, workflow gaps, and revenue opportunities.",
+    icon: "/assets/icons/process/checklist.svg",
+  },
+  {
+    title: "Onboard",
+    description:
+      "We organize access, payer details, systems, and documentation.",
+    icon: "/assets/icons/process/folder.svg",
+  },
+  {
+    title: "Support",
+    description: "We manage claims, follow-up, payment posting, and reporting.",
+    icon: "/assets/icons/process/headphones.svg",
+  },
+];
+---
+
+<style>
+  .process {
+    padding: 5rem 1.5rem;
+    overflow: hidden;
+    color: var(--primary-navy);
+
+    position: relative;
+    isolation: isolate;
+    padding: 5rem 1.5rem;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: url("/img/gradient.jpeg") center / cover no-repeat;
+      opacity: 0.5;
+      max-width: 100%;
+      height: auto;
+      vertical-align: middle;
+      shape-margin: 1rem;
+    }
+
+    .container {
+      width: min(100%, 1180px);
+      margin: 0 auto;
+    }
+
+    .intro {
+      max-width: 620px;
+      margin-bottom: 2.5rem;
+
+      h2 {
+        margin: 0;
+        font-family: var(--font-noto-serif);
+        font-size: clamp(2rem, 3.4vw, 3rem);
+        line-height: 1.1;
+      }
+
+      p {
+        margin: 0;
+        font-size: clamp(0.95rem, 1.2vw, 1.08rem);
+        line-height: 1.65;
+      }
+    }
+
+    .title-divider {
+      width: 76px;
+      height: 3px;
+      margin: 1rem 0 1.25rem;
+      border-radius: 999px;
+      background: var(--primary-gold);
+    }
+
+    .steps {
+      --circle-size: clamp(8.5rem, 13vw, 10.25rem);
+
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(1rem, 3vw, 3rem);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: calc(1.6rem + var(--circle-size) / 2);
+        right: 0.35rem;
+        left: calc(var(--circle-size) / 2);
+        border-top: 2px dashed var(--primary-green);
+        opacity: 0.65;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: calc(1.6rem + var(--circle-size) / 2 - 0.35rem);
+        right: 0.2rem;
+        width: 0.65rem;
+        height: 0.65rem;
+        border-top: 2px solid var(--primary-green);
+        border-right: 2px solid var(--primary-green);
+        transform: rotate(45deg);
+      }
+    }
+
+    .step {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+
+      > p {
+        max-width: 245px;
+        margin: 1.25rem auto 0;
+        font-size: clamp(0.85rem, 1vw, 0.98rem);
+        font-weight: 600;
+        line-height: 1.45;
+      }
+    }
+
+    .marker {
+      position: relative;
+      width: var(--circle-size);
+      padding-top: 1.6rem;
+    }
+
+    .step-number {
+      position: absolute;
+      top: 0;
+      left: 0.2rem;
+      color: var(--primary-navy);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .circle {
+      position: relative;
+      display: grid;
+      width: var(--circle-size);
+      aspect-ratio: 1;
+      place-items: center;
+      overflow: hidden;
+      border: 3px solid var(--primary-green);
+      border-radius: 50%;
+      background: var(--primary-white);
+      box-shadow: 0 10px 24px rgb(9 33 59 / 10%);
+
+      &::before {
+        content: "";
+        position: absolute;
+      }
+
+      h3 {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        color: var(--primary-navy);
+        font-family: var(--font-noto-serif);
+        font-size: clamp(1.15rem, 1.8vw, 1.55rem);
+        line-height: 1.1;
+        text-decoration: underline;
+        text-decoration-color: var(--primary-green);
+        text-decoration-thickness: 2px;
+        text-underline-offset: 0.22em;
+      }
+    }
+
+    .step-icon {
+      position: absolute;
+      width: 66%;
+      height: 66%;
+      object-fit: contain;
+      opacity: 0.12;
+    }
+
+    .step:nth-child(2) .step-icon {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .process {
+      padding: 4rem 1rem;
+
+      .intro {
+        margin-bottom: 2.25rem;
+      }
+
+      .steps {
+        --circle-size: 6.5rem;
+
+        display: flex;
+        gap: 1.25rem;
+        flex-direction: column;
+
+        &::before {
+          top: calc(var(--circle-size) / 2 + 1.15rem);
+          right: auto;
+          bottom: calc(var(--circle-size) / 2);
+          left: calc(var(--circle-size) / 2);
+          border-top: 0;
+          border-left: 2px dashed var(--primary-green);
+        }
+
+        &::after {
+          display: none;
+        }
+      }
+
+      .step {
+        display: grid;
+        grid-template-columns: var(--circle-size) minmax(0, 1fr);
+        gap: 1.25rem;
+        align-items: center;
+        text-align: left;
+
+        > p {
+          max-width: 32rem;
+          margin: 0;
+          font-size: 0.95rem;
+          font-weight: 500;
+        }
+      }
+
+      .marker {
+        padding-top: 1.15rem;
+      }
+
+      .step-number {
+        left: 0;
+      }
+
+      .circle {
+        border-width: 2px;
+
+        h3 {
+          max-width: 80%;
+          font-size: 1rem;
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 380px) {
+    .process {
+      .steps {
+        --circle-size: 5.75rem;
+      }
+
+      .step {
+        gap: 1rem;
+
+        > p {
+          font-size: 0.88rem;
+        }
+      }
+
+      .circle h3 {
+        font-size: 0.9rem;
+      }
+    }
+  }
+</style>
+
+<section class="process" id="process" aria-labelledby="process-title">
+  <div class="container">
+    <header class="intro">
+      <h2 id="process-title">Our Process</h2>
+      <div class="title-divider" aria-hidden="true"></div>
+      <p>
+        Getting started is simple. We learn about your practice, review your
+        needs, and build a billing support process that works for you.
+      </p>
+    </header>
+
+    <ol class="steps">
+      {
+        steps.map((step, index) => (
+          <li class="step">
+            <div class="marker">
+              <span class="step-number" aria-hidden="true">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <div class="circle">
+                <img class="step-icon" src={step.icon} alt="" />
+                <h3>{step.title}</h3>
+              </div>
+            </div>
+            <p>{step.description}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <Results />
+  </div>
+</section>
