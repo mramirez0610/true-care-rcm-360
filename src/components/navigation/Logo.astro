@@ -3,9 +3,20 @@
 ---
 
 <style lang="scss">
-  img {
+  .logo-link {
+    display: inline-flex;
     height: 80%;
+    align-items: center;
+    line-height: 0;
+
+    .logo {
+      display: block;
+      width: auto;
+      height: 100%;
+    }
   }
 </style>
 
-<img src="/assets/logoComplete.svg" alt="Logo" />
+<a class="logo-link" href="/">
+  <img class="logo" src="/assets/logoComplete.svg" alt="True Care RCM 360" />
+</a>

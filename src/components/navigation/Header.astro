@@ -24,7 +24,18 @@ import Logo from "./Logo.astro";
       0px 4px 8px 3px rgba(0, 0, 0, 0.15);
     // padding: 2% 5%;
 
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
+      padding-inline: 1rem;
+      justify-content: flex-end;
+
+      :global(.logo-link) {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        height: 65%;
+      }
+
       .header-cta {
         display: none;
       }
