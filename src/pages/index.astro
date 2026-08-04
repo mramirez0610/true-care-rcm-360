@@ -6,6 +6,7 @@ import WhatWeDo from "../components/home/whatWeDo/WhatWeDo.astro";
 import ServiceCards from "../components/home/serviceCards/ServiceCards.astro";
 import WhyUs from "../components/home/whyUs/WhyUs.astro";
 import OurProcess from "../components/home/process/OurProcess.astro";
+import Contact from "../components/contact/Contact.astro";
 ---
 
 <Main>
@@ -26,7 +27,7 @@ import OurProcess from "../components/home/process/OurProcess.astro";
     justify="space-between"
     cta={{
       text: "SCHEDULE A FREE CONSULTATION",
-      href: "/test",
+      href: "#contact",
       variant: "secondary",
     }}
     icon="/assets/icons/peopleGroup.svg"
@@ -34,4 +35,5 @@ import OurProcess from "../components/home/process/OurProcess.astro";
   <ServiceCards />
   <WhyUs />
   <OurProcess />
+  <Contact />
 </Main>
