@@ -1,0 +1,79 @@
+---
+import ContactDetails from "../contact/ContactDetails.astro";
+---
+
+<style>
+  footer {
+    padding: 0 1.5rem 1.75rem;
+    background: linear-gradient(
+      to bottom,
+      var(--primary-white) 0,
+      var(--primary-white) 2.75rem,
+      var(--primary-green) 2.75rem,
+      var(--primary-green) 100%
+    );
+    color: var(--primary-navy);
+
+    .footer-card {
+      display: grid;
+      width: min(100%, 1280px);
+      min-height: 13.5rem;
+      margin-inline: auto;
+      padding: clamp(2rem, 4vw, 3.5rem) clamp(2rem, 5vw, 4.5rem);
+      grid-template-columns: minmax(16rem, 1fr) minmax(18rem, 0.55fr);
+      gap: 3rem;
+      align-items: center;
+      border: 2px solid var(--primary-green);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .brand {
+      display: inline-flex;
+      width: fit-content;
+      max-width: 24rem;
+      line-height: 0;
+
+      img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      &:focus-visible {
+        border-radius: 3px;
+        outline: 2px solid var(--primary-gold);
+        outline-offset: 5px;
+      }
+    }
+
+    @media (width <= 760px) {
+      padding-inline: 1rem;
+
+      .footer-card {
+        min-height: 0;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .brand {
+        width: min(100%, 20rem);
+      }
+    }
+
+    @media (width <= 420px) {
+      .footer-card {
+        padding: 1.75rem 1.35rem;
+      }
+    }
+  }
+</style>
+
+<footer aria-label="Site footer">
+  <div class="footer-card">
+    <a class="brand" href="/" aria-label="True Care RCM 360 home">
+      <img src="/assets/logoComplete.svg" alt="True Care RCM 360 Solutions" />
+    </a>
+    <ContactDetails compact />
+  </div>
+</footer>
