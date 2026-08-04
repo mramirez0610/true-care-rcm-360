@@ -4,16 +4,18 @@ import Button from "../../global/Button.astro";
 
 <style>
   .hero-block {
-    /* width: 50%; */
+    width: 50%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 0 4%;
-    gap: 2vh;
+    padding: clamp(2rem, 4vw, 4.5rem);
+    gap: clamp(1rem, 2vh, 1.5rem);
 
     .header {
       h1 {
-        font-size: 5ch;
+        font-size: clamp(2.5rem, 4.1vw, 4.6rem);
+        line-height: 1.04;
+        letter-spacing: -0.035em;
         font-weight: 500;
         width: 100%;
         text-align: left;
@@ -26,37 +28,100 @@ import Button from "../../global/Button.astro";
     }
 
     .divider {
-      width: 30%;
-      border: 2px solid var(--primary-gold);
+      width: clamp(4.5rem, 30%, 9rem);
+      height: 3px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--primary-gold);
     }
 
     .sub-header {
-      width: 75%;
+      width: min(100%, 38rem);
 
       h2 {
         margin: 0;
         font-weight: 500;
+        font-size: clamp(1.15rem, 1.55vw, 1.6rem);
+        line-height: 1.35;
         text-align: left;
         font-family: var(--font-noto-serif);
       }
     }
 
     .cta-section {
+      max-width: 43rem;
+
       p {
-        font-size: 18px;
+        margin: 0;
+        font-size: clamp(1rem, 1.15vw, 1.125rem);
+        line-height: 1.65;
       }
     }
 
     .cta-buttons {
       width: 100%;
       display: flex;
-      justify-content: space-around;
+      align-items: center;
+      gap: 1rem;
     }
 
     @media (min-width: 1600px) {
       width: 50%;
       padding: 0 8%;
       gap: 2vh;
+    }
+
+    @media (max-width: 900px) {
+      position: relative;
+      z-index: 3;
+      width: 100%;
+      min-height: max(46rem, calc(100svh - var(--header-size)));
+      justify-content: center;
+      padding: clamp(2.5rem, 9vw, 4.5rem) clamp(1.25rem, 6vw, 3rem);
+      gap: 1rem;
+      text-shadow: 0 1px 18px rgba(248, 248, 248, 0.65);
+
+      .header {
+        h1 {
+          font-size: clamp(2.35rem, 11vw, 3.75rem);
+          line-height: 1.02;
+        }
+      }
+
+      .sub-header {
+        h2 {
+          font-size: clamp(1.125rem, 4.8vw, 1.4rem);
+          line-height: 1.4;
+        }
+      }
+
+      .cta-section {
+        p {
+          font-size: 1rem;
+          line-height: 1.6;
+        }
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: stretch;
+        margin-top: 0.25rem;
+      }
+
+      .cta-buttons :global(.button) {
+        width: 100%;
+        min-height: 3.5rem;
+      }
+    }
+
+    @media (min-width: 560px) and (max-width: 900px) {
+      .cta-buttons {
+        flex-direction: row;
+      }
+    }
+
+    @media (max-width: 900px) and (orientation: landscape) {
+      min-height: 42rem;
     }
   }
 </style>
@@ -82,7 +147,7 @@ import Button from "../../global/Button.astro";
     <Button
       cta="Get a Free Consultation"
       ,
-      href="/test"
+      href="#contact"
       ,
       icon="/assets/icons/calendar.svg"
     />

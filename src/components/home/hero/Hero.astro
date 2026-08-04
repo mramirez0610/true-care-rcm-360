@@ -4,27 +4,54 @@ import HeroInfo from "./HeroInfo.astro";
 ---
 
 <style>
-  header {
+  .hero {
     width: 100%;
     display: flex;
     align-items: center;
-    /* justify-content: space-between; */
     justify-content: center;
     overflow: hidden;
+    position: relative;
     z-index: 1;
-    /* max-width: 1200px; */
-
-    /* gap: clamp(2rem, 4vw, 4rem); */
-
-    /* min-height: calc(100svh - var(--header-height) - var(--header-margin-top)); */
+    isolation: isolate;
+    background: var(--primary-white) url("/img/gradient.jpeg") center / cover
+      no-repeat;
 
     @media (min-width: 1600px) {
-      height: 55%;
+      min-height: 55vh;
+    }
+
+    @media (max-width: 900px) {
+      display: block;
+      min-height: max(46rem, calc(100svh - var(--header-size)));
+    }
+
+    @media (max-width: 900px) {
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+
+        /* gradient for visibility */
+
+        /* background: linear-gradient(
+          180deg,
+          rgba(248, 248, 248, 0.94) 0%,
+          rgba(236, 243, 238, 0.86) 48%,
+          rgba(236, 243, 238, 0.52) 72%,
+          rgba(9, 33, 59, 0.16) 100%
+        ); */
+      }
+    }
+
+    @media (max-width: 900px) and (orientation: landscape) {
+      min-height: 42rem;
     }
   }
 </style>
 
-<header>
+<header class="hero">
   <HeroInfo />
   <HeroImg />
 </header>
