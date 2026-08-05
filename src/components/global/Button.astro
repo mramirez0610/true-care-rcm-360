@@ -14,9 +14,9 @@ const { cta, href = "#", icon, variant = "primary" } = Astro.props;
     border-radius: 10px;
     border: 2px solid var(--primary-navy);
     text-decoration: none;
+    font-size: 0.833rem;
     font-weight: 600;
     cursor: pointer;
-    /* font-size: 0.95em; */
     text-transform: uppercase;
     box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
   }
@@ -34,17 +34,16 @@ const { cta, href = "#", icon, variant = "primary" } = Astro.props;
   }
 </style>
 
-<a href={href}>
-  <button
-    class={`button ${variant === "secondary" ? "button--secondary" : ""}`}
-  >
-    {
-      icon ? (
-        <img src={icon} alt="" class="cta-banner-icon" />
-      ) : (
-        <slot name="icon" />
-      )
-    }
-    <span>{cta}</span>
-  </button>
+<a
+  class={`button ${variant === "secondary" ? "button--secondary" : ""}`}
+  href={href}
+>
+  {
+    icon ? (
+      <img src={icon} alt="" class="cta-banner-icon" />
+    ) : (
+      <slot name="icon" />
+    )
+  }
+  <span>{cta}</span>
 </a>
