@@ -127,7 +127,7 @@
     inset: 0;
     width: 100%;
     min-height: 360px;
-    border-radius: 14px;
+    border-radius: 28px;
     border: 2px solid rgba(90, 121, 100, 0.72);
     /* border: 2px solid var(--primary-navy); */
     background: #fff;
@@ -145,7 +145,7 @@
 
   .service-card-content {
     position: relative;
-    top: 10%;
+    top: 8%;
   }
 
   .service-card-title {
