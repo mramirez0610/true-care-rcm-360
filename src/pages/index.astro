@@ -3,13 +3,12 @@ import Main from "../layouts/Main.astro";
 import Hero from "../components/home/hero/Hero.astro";
 import Banner from "../components/home/banner/Banner.astro";
 import WhatWeDo from "../components/home/whatWeDo/WhatWeDo.astro";
-import ServiceCards from "../components/home/serviceCards/ServiceCards.astro";
 import WhyUs from "../components/home/whyUs/WhyUs.astro";
 import OurProcess from "../components/home/process/OurProcess.astro";
 import Contact from "../components/contact/Contact.astro";
 ---
 
-<Main>
+<Main pageTitle="Home">
   <Hero />
   <Banner
     primaryText="Compassionate Care. Precise Billing. Better Results."
@@ -32,7 +31,6 @@ import Contact from "../components/contact/Contact.astro";
     }}
     icon="/assets/icons/peopleGroup.svg"
   />
-  <ServiceCards />
   <WhyUs />
   <OurProcess />
   <Contact />
