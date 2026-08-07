@@ -13,8 +13,8 @@ import HeroInfo from "./HeroInfo.astro";
     position: relative;
     z-index: 1;
     isolation: isolate;
-    background: var(--primary-white) url("/img/gradient.jpeg") center / cover
-      no-repeat;
+    /* background: var(--primary-white) url("/img/gradient.jpeg") center / cover
+      no-repeat; */
 
     @media (min-width: 1600px) {
       min-height: 55vh;
@@ -36,11 +36,10 @@ import HeroInfo from "./HeroInfo.astro";
         /* gradient for visibility */
 
         background: linear-gradient(
-          180deg,
-          rgba(248, 248, 248, 0.94) 0%,
-          rgba(236, 243, 238, 0.86) 48%,
-          rgba(236, 243, 238, 0.52) 72%,
-          rgba(9, 33, 59, 0.16) 100%
+          to bottom,
+
+          rgba(236, 243, 238, 0.87) 78%,
+          rgba(248, 248, 248, 0.94) 100%
         );
       }
     }

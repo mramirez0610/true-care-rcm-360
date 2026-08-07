@@ -1,3 +1,18 @@
+---
+const links = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About Us" },
+  { href: "/services", label: "Services" },
+  { href: "/why-us", label: "Why Us" },
+  { href: "/resources", label: "Resources" },
+  { href: "/#contact", label: "Contact" },
+];
+
+const normalizePath = (path: string) =>
+  path === "/" ? path : path.replace(/\/$/, "");
+const currentPath = normalizePath(Astro.url.pathname);
+---
+
 <style>
   .nav {
     display: flex;
@@ -13,46 +28,183 @@
       font-size: larger;
       text-decoration: none;
     }
+
+    a[aria-current="page"] {
+      text-decoration: underline;
+      text-decoration-color: var(--primary-gold);
+      text-decoration-thickness: 2px;
+      text-underline-offset: 0.4rem;
+    }
   }
 
   @media (max-width: 900px) {
     .nav {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 100%;
-      height: auto;
-      padding: 0.75rem 1rem 1rem;
+      visibility: hidden;
+      position: fixed;
+      inset: 0;
+      z-index: 11;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      padding: calc(var(--header-size) + 2rem) clamp(1.5rem, 8vw, 4rem) 3rem;
       flex-direction: column;
-      align-items: stretch;
-      gap: 0.25rem;
-      background-color: var(--primary-white);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      align-items: flex-start;
+      justify-content: center;
+      gap: clamp(1.25rem, 4vh, 2.5rem);
+      /* background-color: #fff; */
+      will-change: transform;
+      backface-visibility: hidden;
+
+      background:
+        linear-gradient(rgb(248 248 248 / 50%), rgb(248 248 248 / 96%)),
+        url("/img/gradient.jpeg") center / cover no-repeat;
     }
 
     .nav a {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border-radius: 0.25rem;
+      width: fit-content;
+      padding: 0;
+      font-family: var(--font-noto-serif);
+      font-size: clamp(2rem, 9vw, 4rem);
+      line-height: 1;
     }
 
     .nav a:hover,
     .nav a:focus-visible {
-      background-color: rgba(9, 33, 59, 0.08);
+      color: var(--primary-green);
     }
 
-    :global(#mobile-button[aria-expanded="true"]) ~ .nav {
-      display: flex;
+    .nav a:focus-visible {
+      outline: 3px solid var(--primary-gold);
+      outline-offset: 0.5rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav,
+    .nav a {
+      transition: none;
     }
   }
 </style>
 
 <nav id="main-menu" class="nav" aria-label="Main navigation">
-  <a href="/">Home</a>
-  <a href="/about">About Us</a>
-  <a href="/services">Services</a>
-  <a href="/why-us">Why Us</a>
-  <a href="/resources">Resources</a>
-  <a href="/#contact">Contact</a>
+  {
+    links.map(({ href, label }) => {
+      const linkPath = normalizePath(href.split("#")[0]);
+      const isCurrent = currentPath === linkPath && href !== "/#contact";
+
+      return (
+        <a href={href} aria-current={isCurrent ? "page" : undefined}>
+          {label}
+        </a>
+      );
+    })
+  }
 </nav>
+
+<script>
+  import gsap from "gsap";
+
+  const menu = document.querySelector<HTMLElement>("#main-menu");
+  const menuButton =
+    document.querySelector<HTMLButtonElement>("#mobile-button");
+  const menuLinks = menu?.querySelectorAll<HTMLAnchorElement>("a");
+  const mobileQuery = window.matchMedia("(max-width: 900px)");
+  const reduceMotionQuery = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  );
+
+  if (menu && menuButton && menuLinks) {
+    const timeline = gsap.timeline({
+      paused: true,
+      defaults: { ease: "power3.out" },
+      onReverseComplete: () => gsap.set(menu, { visibility: "hidden" }),
+    });
+
+    timeline
+      .set(menu, { visibility: "visible" })
+      .fromTo(
+        menu,
+        { yPercent: -100 },
+        {
+          yPercent: 0,
+          duration: 0.55,
+          ease: "power2.inOut",
+          force3D: true,
+          immediateRender: false,
+        },
+      )
+      .fromTo(
+        menuLinks,
+        { autoAlpha: 0, y: 36 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.45,
+          stagger: 0.07,
+          immediateRender: false,
+        },
+        "-=0.32",
+      );
+
+    if (!mobileQuery.matches) {
+      gsap.set([menu, menuLinks], { clearProps: "all" });
+    }
+
+    const setButtonState = (isOpen: boolean) => {
+      menuButton.setAttribute("aria-expanded", String(isOpen));
+      menuButton.setAttribute(
+        "aria-label",
+        isOpen ? "Close main menu" : "Open main menu",
+      );
+      document.body.style.overflow = isOpen ? "hidden" : "";
+    };
+
+    const closeMenu = ({ returnFocus = false } = {}) => {
+      if (menuButton.getAttribute("aria-expanded") !== "true") return;
+
+      setButtonState(false);
+      if (reduceMotionQuery.matches) {
+        timeline.pause(0);
+        gsap.set(menu, { visibility: "hidden" });
+      } else {
+        timeline.reverse();
+      }
+      if (returnFocus) menuButton.focus();
+    };
+
+    const openMenu = () => {
+      setButtonState(true);
+      if (reduceMotionQuery.matches) {
+        timeline.progress(1).pause();
+      } else {
+        timeline.play();
+      }
+      menuLinks[0]?.focus({ preventScroll: true });
+    };
+
+    menuButton.addEventListener("click", () => {
+      const isOpen = menuButton.getAttribute("aria-expanded") === "true";
+      if (isOpen) closeMenu();
+      else openMenu();
+    });
+
+    menuLinks.forEach((link) =>
+      link.addEventListener("click", () => closeMenu()),
+    );
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeMenu({ returnFocus: true });
+    });
+
+    mobileQuery.addEventListener("change", ({ matches }) => {
+      if (!matches) {
+        setButtonState(false);
+        timeline.pause(0);
+        gsap.set([menu, menuLinks], { clearProps: "all" });
+      } else {
+        gsap.set(menu, { visibility: "hidden" });
+      }
+    });
+  }
+</script>

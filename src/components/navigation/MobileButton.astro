@@ -1,10 +1,7 @@
----
-import { Icon } from "astro-icon/components";
----
-
 <style>
   .mobile-button {
     display: none;
+    position: relative;
     align-items: center;
     justify-content: center;
     padding: 0.375rem;
@@ -14,8 +11,38 @@ import { Icon } from "astro-icon/components";
     color: var(--primary-navy);
 
     cursor: pointer;
-    font-size: 2rem;
-    line-height: 1;
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .mobile-button span {
+    position: absolute;
+    width: 1.75rem;
+    height: 2px;
+    background: currentColor;
+    transition:
+      transform 250ms ease,
+      opacity 200ms ease;
+  }
+
+  .mobile-button span:first-child {
+    transform: translateY(-0.35rem);
+  }
+
+  .mobile-button span:last-child {
+    transform: translateY(0.35rem);
+  }
+
+  .mobile-button[aria-expanded="true"] span:first-child {
+    transform: rotate(45deg);
+  }
+
+  .mobile-button[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .mobile-button[aria-expanded="true"] span:last-child {
+    transform: rotate(-45deg);
   }
 
   .mobile-button:focus-visible {
@@ -39,35 +66,7 @@ import { Icon } from "astro-icon/components";
   class="mobile-button"
   id="mobile-button"
 >
-  <Icon name="gg:menu" aria-hidden="true" />
+  <span aria-hidden="true"></span>
+  <span aria-hidden="true"></span>
+  <span aria-hidden="true"></span>
 </button>
-
-<script>
-  const menuButton =
-    document.querySelector<HTMLButtonElement>("#mobile-button");
-
-  const closeMenu = () => {
-    menuButton?.setAttribute("aria-expanded", "false");
-    menuButton?.setAttribute("aria-label", "Open main menu");
-  };
-
-  menuButton?.addEventListener("click", () => {
-    const isExpanded = menuButton.getAttribute("aria-expanded") === "true";
-
-    menuButton.setAttribute("aria-expanded", String(!isExpanded));
-    menuButton.setAttribute(
-      "aria-label",
-      isExpanded ? "Open main menu" : "Close main menu",
-    );
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (
-      event.key === "Escape" &&
-      menuButton?.getAttribute("aria-expanded") === "true"
-    ) {
-      closeMenu();
-      menuButton.focus();
-    }
-  });
-</script>
