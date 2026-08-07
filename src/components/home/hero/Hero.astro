@@ -13,8 +13,9 @@ import HeroInfo from "./HeroInfo.astro";
     position: relative;
     z-index: 1;
     isolation: isolate;
-    /* background: var(--primary-white) url("/img/gradient.jpeg") center / cover
-      no-repeat; */
+    background:
+      linear-gradient(rgb(248 248 248 / 65%), rgb(248 248 248 / 65%)),
+      url("/img/gradient.jpeg") center / cover no-repeat;
 
     @media (min-width: 1600px) {
       min-height: 55vh;
@@ -37,7 +38,6 @@ import HeroInfo from "./HeroInfo.astro";
 
         background: linear-gradient(
           to bottom,
-
           rgba(236, 243, 238, 0.87) 78%,
           rgba(248, 248, 248, 0.94) 100%
         );
