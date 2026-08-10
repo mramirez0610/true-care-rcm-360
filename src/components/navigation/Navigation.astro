@@ -25,7 +25,8 @@ const currentPath = normalizePath(Astro.url.pathname);
       width: fit-content;
       color: var(--primary-navy);
       font-family: var(--font-noto-sans);
-      font-size: larger;
+      font-size: clamp(0.95rem, 0.75rem + 0.35vw, 1.2rem);
+      white-space: nowrap;
       text-decoration: none;
     }
 
