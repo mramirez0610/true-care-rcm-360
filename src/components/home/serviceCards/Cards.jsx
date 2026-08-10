@@ -5,7 +5,7 @@ import "./Cards.css";
 const services = [
   {
     id: "medical-billing-coding",
-    number: "1.",
+    number: "01",
     title: "Medical Billing & Coding",
     summary: "Accurate coding. Clean claims.",
     description:
@@ -18,7 +18,7 @@ const services = [
   },
   {
     id: "claims-submission",
-    number: "2.",
+    number: "02",
     title: "Claims Submission",
     summary: "Timely submission. Faster payments.",
     description:
@@ -31,7 +31,7 @@ const services = [
   },
   {
     id: "denial-management",
-    number: "3.",
+    number: "03",
     title: "Denial Management",
     summary: "Reducing denials. Recover revenue.",
     description:
@@ -44,7 +44,7 @@ const services = [
   },
   {
     id: "payment-posting",
-    number: "4.",
+    number: "04",
     title: "Payment Posting",
     summary: "Accurate posting. Up-to-date records.",
     description:
@@ -57,7 +57,7 @@ const services = [
   },
   {
     id: "ar-follow-up",
-    number: "5.",
+    number: "05",
     title: "Accounts Receivable Follow-Up",
     summary: "Persistent follow-up. Improved collections.",
     description:
@@ -70,7 +70,7 @@ const services = [
   },
   {
     id: "credentialing-support",
-    number: "6.",
+    number: "06",
     title: "Credentialing Support",
     summary: "Hassle-free credentialing. Stay in-network.",
     description:
@@ -84,27 +84,13 @@ const services = [
 ];
 
 const getCardPosition = (depth, layout = "desktop") => {
-  if (layout === "compact") {
+  if (layout === "compact" || layout === "tablet") {
     return {
       x: 0,
       y: 0,
       rotation: 0,
       scale: 1,
       opacity: depth === 0 ? 1 : 0,
-      zIndex: services.length - depth,
-    };
-  }
-
-  if (layout === "tablet") {
-    return {
-      // x: depth * 7,
-      // y: depth * -9,
-      // rotation: depth * 1.45,
-      x: depth * 2,
-      y: depth * -12,
-      rotation: depth * 2,
-      scale: 1 - depth * 0.006,
-      opacity: depth < 4 ? 1 : 0,
       zIndex: services.length - depth,
     };
   }
@@ -204,12 +190,12 @@ export default function Cards() {
 
     timeline.current = animation;
 
-    if (layout === "compact") {
+    if (layout === "compact" || layout === "tablet") {
       animation
         .to(outgoingCard, { autoAlpha: 0, y: 16, duration: 0.22 })
-        .set(outgoingCard, getCardPosition(services.length - 1, "compact"))
+        .set(outgoingCard, getCardPosition(services.length - 1, layout))
         .set(incomingCard, {
-          ...getCardPosition(0, "compact"),
+          ...getCardPosition(0, layout),
           y: -12,
         })
         .to(incomingCard, { autoAlpha: 1, y: 0, duration: 0.34 });
@@ -298,8 +284,12 @@ export default function Cards() {
     <section className="services-section">
       <div className="services-shell">
         <div className="services-copy">
-          <h2 className="services-title">Our Services</h2>
+          <h1 className="services-title">Our Services</h1>
           <div className="services-divider" />
+          <p className="services-intro">
+            Comprehensive revenue cycle support designed to keep your practice
+            running smoothly.
+          </p>
 
           <div className="services-list" role="tablist" aria-label="Services">
             {services.map((service, index) => {
@@ -316,12 +306,17 @@ export default function Cards() {
                   aria-controls={`service-panel-${service.id}`}
                   id={`service-tab-${service.id}`}
                 >
-                  <span className="service-item-title">
-                    {service.number} {service.title}
+                  <span className="service-item-number">
+                    {service.number}
                   </span>
-                  <span className="service-item-summary">
-                    {service.summary}
-                  </span>
+                  <span className="service-item-title">{service.title}</span>
+                  <svg
+                    className="service-item-arrow"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 12h14M13 6l6 6-6 6" />
+                  </svg>
                 </button>
               );
             })}

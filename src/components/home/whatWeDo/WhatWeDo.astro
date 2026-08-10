@@ -1,4 +1,6 @@
 ---
+import Button from "../../global/Button.astro";
+
 const items = [
   {
     title: "Medical Billing & Coding",
@@ -81,6 +83,10 @@ const items = [
     /* grid-auto-flow: column; */
   }
 
+  .what-we-do-action {
+    margin-top: 2rem;
+  }
+
   .what-we-do-card {
     background: white;
     /* border: 1px solid #dbe2e8; */
@@ -141,6 +147,10 @@ const items = [
           </article>
         ))
       }
+    </div>
+
+    <div class="what-we-do-action">
+      <Button cta="Explore All Services" href="/services" />
     </div>
   </div>
 </section>
