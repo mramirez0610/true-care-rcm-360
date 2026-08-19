@@ -1,0 +1,119 @@
+---
+interface Props {
+  title: string;
+  image: string;
+  eyebrow?: string;
+  description?: string;
+  imagePosition?: string;
+}
+
+const {
+  title,
+  image,
+  eyebrow,
+  description,
+  imagePosition = "center center",
+} = Astro.props;
+---
+
+<style lang="scss">
+  .page-hero {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: flex-end;
+    min-height: clamp(25rem, 45vw, 35rem);
+    overflow: hidden;
+    border-bottom: 4px solid var(--primary-gold);
+    background: var(--primary-navy);
+
+    .hero-image,
+    .hero-shade {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hero-image {
+      z-index: -2;
+      object-fit: cover;
+    }
+
+    .hero-shade {
+      z-index: -1;
+      background: rgb(0 0 0 / 60%);
+    }
+
+    .hero-content {
+      width: min(calc(100% - 3rem), 1180px);
+      margin: 0 auto;
+      padding: clamp(3rem, 1vw, 5.5rem) 0;
+      color: white;
+
+      h1 {
+        max-width: 800px;
+        margin: 0;
+        color: white;
+        font-family: var(--font-noto-serif);
+        font-size: clamp(2rem, 2.75vw, 3.5rem);
+        line-height: 1.05;
+        text-wrap: balance;
+        text-shadow: 0 2px 18px rgb(0 0 0 / 28%);
+      }
+    }
+
+    .hero-eyebrow {
+      margin: 0 0 0.75rem;
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .hero-description {
+      max-width: 680px;
+      margin: 1.25rem 0 0;
+      color: white;
+      font-size: clamp(0.9rem, 1.15vw, 1.05rem);
+      line-height: 1.6;
+      text-shadow: 0 2px 14px rgb(0 0 0 / 32%);
+    }
+
+    .hero-divider {
+      width: 78px;
+      height: 4px;
+      margin-top: 1.4rem;
+      border-radius: 999px;
+      background: var(--primary-gold);
+    }
+
+    @media (width <= 760px) {
+      min-height: 27rem;
+
+      .hero-content {
+        width: calc(100% - 2rem);
+        padding: 1rem 0;
+      }
+    }
+  }
+</style>
+
+<section class="page-hero" aria-labelledby="page-hero-title">
+  <img
+    class="hero-image"
+    src={image}
+    alt=""
+    style={`object-position: ${imagePosition}`}
+    loading="eager"
+    fetchpriority="high"
+  />
+  <div class="hero-shade" aria-hidden="true"></div>
+  <div class="hero-content">
+    {eyebrow && <p class="hero-eyebrow">{eyebrow}</p>}
+    <h1 id="page-hero-title">{title}</h1>
+    {description && <p class="hero-description">{description}</p>}
+    <div class="hero-divider" aria-hidden="true"></div>
+  </div>
+</section>

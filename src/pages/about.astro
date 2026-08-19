@@ -1,5 +1,6 @@
 ---
 import Main from "../layouts/Main.astro";
+import PageHero from "../components/global/PageHero.astro";
 
 const team = [
   {
@@ -29,35 +30,94 @@ const team = [
     background: var(--primary-white);
     color: var(--primary-navy);
 
-    h1,
     h2,
     h3 {
       color: var(--primary-navy);
       font-family: var(--font-noto-serif);
     }
 
-    h1 {
-      max-width: 780px;
-      margin: 0;
-      font-size: clamp(2.35rem, 2.5vw, 4.25rem);
-      line-height: 1.05;
-    }
-
-    .about-intro,
-    .team-section {
+    /* old header styling */
+    .about-intro {
       padding: 5rem 1.5rem;
+      border-bottom: 4px solid var(--primary-gold);
+      background:
+        linear-gradient(rgb(248 248 248 / 86%), rgb(248 248 248 / 26%)),
+        url("/img/gradient.jpeg") center / cover no-repeat;
+
+      h1 {
+        max-width: 780px;
+        margin: 0;
+        color: var(--primary-navy);
+        font-family: var(--font-noto-serif);
+        font-size: clamp(2.35rem, 2.5vw, 4.25rem);
+        line-height: 1.05;
+      }
 
       @media (width <= 760px) {
         padding: 4rem 1rem;
       }
     }
 
-    .about-intro {
-      background:
-        linear-gradient(rgb(248 248 248 / 86%), rgb(248 248 248 / 26%)),
-        url("/img/gradient.jpeg") center / cover no-repeat;
+    .intro-grid {
+      display: grid;
+      grid-template-columns: minmax(240px, 0.9fr) minmax(0, 1.3fr);
+      align-items: stretch;
+      overflow: hidden;
+      border-radius: 28px;
+      background: var(--primary-white);
+      box-shadow: 0 12px 28px rgb(9 33 59 / 12%);
 
-      border-bottom: 4px solid var(--primary-gold);
+      @media (width <= 760px) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .intro-image {
+      min-height: 280px;
+      height: auto;
+      vertical-align: middle;
+      font-style: italic;
+      background-image: url("/img/AboutImage.PNG");
+      background-repeat: no-repeat;
+      background-size: cover;
+      shape-margin: 1rem;
+
+      @media (width <= 760px) {
+        min-height: 240px;
+        border-right: 0;
+        border-bottom: 1px solid var(--primary-green);
+      }
+    }
+
+    .content-card {
+      align-self: center;
+      padding: clamp(1.75rem, 4vw, 3.25rem);
+      background: var(--primary-white);
+
+      h2 {
+        margin: 0;
+        font-size: clamp(1.85rem, 2vw, 2.75rem);
+        line-height: 1.1;
+      }
+
+      p {
+        margin: 0;
+        font-size: clamp(0.96rem, 1vw, 1.05rem);
+        line-height: 1.65;
+      }
+
+      p + p {
+        margin-top: 1rem;
+      }
+    }
+    /* end of old header styling */
+
+    .team-section {
+      padding: 5rem 1.5rem;
+
+      @media (width <= 760px) {
+        padding: 4rem 1rem;
+      }
     }
 
     .container {
@@ -97,20 +157,6 @@ const team = [
       margin: 0.9rem 0 1.15rem;
     }
 
-    .intro-grid {
-      display: grid;
-      grid-template-columns: minmax(240px, 0.9fr) minmax(0, 1.3fr);
-      align-items: stretch;
-      overflow: hidden;
-      border-radius: 28px;
-      background: var(--primary-white);
-      box-shadow: 0 12px 28px rgb(9 33 59 / 12%);
-
-      @media (width <= 760px) {
-        grid-template-columns: 1fr;
-      }
-    }
-
     .team-card {
       /* border: 1px solid var(--primary-green); */
       border-radius: 28px;
@@ -120,65 +166,29 @@ const team = [
     .image-placeholder {
       min-height: 290px;
       overflow: hidden;
-      background: var(--primary-green);
-    }
-
-    .intro-image {
-      min-height: 280px;
-      height: auto;
-      vertical-align: middle;
-      font-style: italic;
-      background-repeat: no-repeat;
-      background-size: cover;
-      shape-margin: 1rem;
-      background-image: url(/img/AboutImage.PNG);
-
-      @media (width <= 760px) {
-        min-height: 240px;
-        border-right: 0;
-        border-bottom: 1px solid var(--primary-green);
-      }
-    }
-
-    .content-card {
-      padding: clamp(1.75rem, 4vw, 3.25rem);
-      align-self: center;
-      background: var(--primary-white);
-
-      h2 {
-        margin: 0;
-        font-size: clamp(1.85rem, 2vw, 2.75rem);
-        line-height: 1.1;
-      }
-
-      p {
-        margin: 0;
-        font-size: clamp(0.96rem, 1vw, 1.05rem);
-        line-height: 1.65;
-      }
-
-      p + p {
-        margin-top: 1rem;
-      }
+      /* background: var(--primary-green); */
     }
 
     .team-section {
-      background: var(--primary-white);
-      /* position: relative;
+      position: relative;
       isolation: isolate;
+      background: var(--primary-white);
 
       &::before {
         content: "";
         position: absolute;
         inset: 0;
         z-index: -1;
-        background: url("/img/gradient.jpeg") center / cover no-repeat;
-        opacity: 0.2;
-        max-width: 100%;
-        height: auto;
-        vertical-align: middle;
-        shape-margin: 1rem;
-      } */
+        background:
+          linear-gradient(rgb(248 248 248 / 86%), rgb(248 248 248 / 26%)),
+          url("/img/gradient.jpeg") center / cover no-repeat;
+        mask-image: linear-gradient(
+          to bottom,
+          black 0%,
+          black calc(100% - 9rem),
+          transparent 100%
+        );
+      }
     }
 
     .section-heading {
@@ -253,9 +263,16 @@ const team = [
 
 <Main pageTitle="About Us">
   <main class="about-page">
-    <section class="about-intro" aria-labelledby="about-title">
+    <PageHero
+      eyebrow="About Us"
+      title="Support built around your practice"
+      description="TrueCare RCM 360 Solutions supports healthcare practices with organized, dependable revenue cycle management. Our goal is to make the billing process easier to understand and easier to manage."
+      image="/img/AboutImage.PNG"
+      imagePosition="center 42%"
+    />
+
+    <!-- <section class="about-intro" aria-labelledby="about-title">
       <div class="container">
-        <!-- <span class="eyebrow">About Us</span> -->
         <h1 id="about-title">About TrueCare RCM 360 Solutions</h1>
         <div class="title-divider" aria-hidden="true"></div>
 
@@ -284,7 +301,7 @@ const team = [
           </article>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <section class="team-section" aria-labelledby="team-title">
       <div class="container">
