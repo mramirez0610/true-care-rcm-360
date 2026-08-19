@@ -2,6 +2,7 @@
 import "../styles/global.scss";
 import Header from "../components/navigation/Header.astro";
 import Footer from "../components/navigation/Footer.astro";
+import ScrollReveal from "../components/global/ScrollReveal.astro";
 import { Font } from "astro:assets";
 const { pageTitle } = Astro.props;
 ---
@@ -20,5 +21,6 @@ const { pageTitle } = Astro.props;
     <Header />
     <slot />
     <Footer />
+    <ScrollReveal />
   </body>
 </html>

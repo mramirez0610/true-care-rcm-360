@@ -1,0 +1,96 @@
+<style is:global>
+  .reveal-pending {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+
+  .reveal-visible {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 500ms ease-out var(--reveal-delay, 0ms),
+      transform 650ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-pending,
+    .reveal-visible {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  if (!reduceMotion && "IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+
+          entry.target.classList.remove("reveal-pending");
+          entry.target.classList.add("reveal-visible");
+          observer.unobserve(entry.target);
+        });
+      },
+      { rootMargin: "0px 0px -10%" },
+    );
+
+    const main = document.querySelector<HTMLElement>("body > main");
+    const pageRoot = main ?? document.body;
+    const blocks = new Set(Array.from(pageRoot.children));
+    const footer = document.querySelector("body > footer");
+
+    if (footer) blocks.add(footer);
+    if (!main && document.body.firstElementChild) {
+      blocks.delete(document.body.firstElementChild);
+    }
+
+    const childrenOf = (element: Element) =>
+      Array.from(element.children).filter(
+        (child): child is HTMLElement =>
+          child instanceof HTMLElement &&
+          !child.matches("script, style, template, [aria-hidden='true']") &&
+          !child.matches("img, picture, video") &&
+          !(
+            !child.textContent?.trim() &&
+            child.children.length === 1 &&
+            child.firstElementChild?.matches("img, picture, video")
+          ),
+      );
+
+    const contentOf = (block: Element) => {
+      let content = childrenOf(block);
+
+      while (content.length === 1) {
+        const nestedContent = childrenOf(content[0]);
+        if (!nestedContent.length) break;
+        content = nestedContent;
+      }
+
+      return content;
+    };
+
+    const targets = new Set<HTMLElement>();
+
+    blocks.forEach((block) => {
+      contentOf(block).forEach((element, index) => {
+        element.style.setProperty(
+          "--reveal-delay",
+          `${Math.min(index * 70, 210)}ms`,
+        );
+        targets.add(element);
+      });
+    });
+
+    targets.forEach((element) => {
+      element.classList.add("reveal-pending");
+      observer.observe(element);
+    });
+  }
+</script>
