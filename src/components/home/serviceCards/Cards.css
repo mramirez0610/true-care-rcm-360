@@ -2,6 +2,7 @@
   position: relative;
   isolation: isolate;
   padding: 4.5rem 1.5rem;
+  background: var(--primary-white);
 
   &::before {
     content: "";
@@ -10,6 +11,12 @@
     z-index: -1;
     background: url("/img/gradient.jpeg") center / cover no-repeat;
     opacity: 0.5;
+    mask-image: linear-gradient(
+      to bottom,
+      black 0%,
+      black calc(100% - 9rem),
+      transparent 100%
+    );
     max-width: 100%;
     height: auto;
     vertical-align: middle;
@@ -184,11 +191,24 @@
 
   .services-preview {
     position: relative;
+    z-index: 1;
     min-height: 450px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     isolation: isolate;
+  }
+
+  &.is-deck-open {
+    .services-copy {
+      position: relative;
+      z-index: 0;
+    }
+
+    .services-preview {
+      z-index: 3;
+    }
   }
 
   .services-mobile-selector {
@@ -200,6 +220,32 @@
     width: min(100%, 370px);
     height: 360px;
     transform: translate(-4rem, 2rem);
+    transition:
+      height 480ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
+
+    &.is-open {
+      height: 405px;
+
+      .service-card {
+        pointer-events: auto;
+        cursor: pointer;
+
+        &:hover,
+        &:focus-visible {
+          border-color: var(--primary-gold);
+          box-shadow: 0 20px 42px rgba(9, 33, 59, 0.2);
+        }
+      }
+
+      .service-card-fan-label {
+        opacity: 1;
+      }
+
+      .service-card.is-active .service-card-fan-label {
+        opacity: 0;
+      }
+    }
   }
 
   .service-card {
@@ -220,7 +266,52 @@
 
     &.is-active {
       box-shadow: 0 16px 34px rgba(9, 33, 59, 0.16);
+      pointer-events: auto;
+      cursor: pointer;
     }
+
+    &:focus-visible {
+      outline: 3px solid var(--primary-gold);
+      outline-offset: 4px;
+    }
+  }
+
+  .service-card-fan-label {
+    position: absolute;
+    top: 0.8rem;
+    left: 1rem;
+    display: flex;
+    gap: 0.35rem;
+    align-items: center;
+    max-width: calc(100% - 2rem);
+    padding: 0.35rem 0.55rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--primary-green);
+    color: var(--primary-white);
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1;
+    opacity: 0;
+    pointer-events: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: opacity 180ms ease 180ms;
+
+    span {
+      color: var(--primary-gold);
+      letter-spacing: 0.08em;
+    }
+  }
+
+  .services-deck-hint {
+    align-self: center;
+    margin: 2.8rem 0 0;
+    color: var(--primary-navy);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.035em;
+    text-align: center;
   }
 
   .service-card-content {
@@ -257,10 +348,19 @@
   }
 }
 
+@media (min-width: 961px) {
+  .services-section {
+    .services-deck.is-open {
+      transform: translate(1rem, 2rem);
+    }
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .services-section {
     .service-item,
-    .service-item-arrow {
+    .service-item-arrow,
+    .services-deck {
       transition: none;
     }
   }
@@ -281,6 +381,10 @@
       min-height: auto;
       flex-direction: column;
       gap: 0.75rem;
+    }
+
+    .service-card.is-active {
+      cursor: default;
     }
 
     .services-mobile-selector {
@@ -352,6 +456,10 @@
       order: 1;
       transform: none;
     }
+
+    .services-deck-hint {
+      display: none;
+    }
   }
 }
 
@@ -402,5 +510,6 @@
     .service-card {
       min-height: 360px;
     }
+
   }
 }

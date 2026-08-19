@@ -105,10 +105,31 @@ const getCardPosition = (depth, layout = "desktop") => {
   };
 };
 
+const getFannedCardPosition = (depth) => {
+  return {
+    x: depth * -150,
+    y: depth * -11,
+    rotation: depth * -1.15,
+    scale: 1,
+    opacity: 1,
+    zIndex: services.length - depth,
+  };
+};
+
+const getLayout = () =>
+  window.matchMedia("(max-width: 640px)").matches
+    ? "compact"
+    : window.matchMedia("(max-width: 960px)").matches
+      ? "tablet"
+      : "desktop";
+
 export default function Cards() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isDeckOpen, setIsDeckOpen] = useState(false);
+  const [canFanDeck, setCanFanDeck] = useState(false);
   const cardRefs = useRef([]);
   const deckOrder = useRef(services.map((_, index) => index));
+  const deckOpen = useRef(false);
   const timeline = useRef(null);
   const isAnimating = useRef(false);
 
@@ -128,10 +149,22 @@ export default function Cards() {
             ? "tablet"
             : "desktop";
 
+        const supportsFan = layout === "desktop";
+        setCanFanDeck(supportsFan);
+
+        if (!supportsFan && deckOpen.current) {
+          timeline.current?.kill();
+          deckOpen.current = false;
+          isAnimating.current = false;
+          setIsDeckOpen(false);
+        }
+
         deckOrder.current.forEach((serviceIndex, depth) => {
           gsap.set(
             cardRefs.current[serviceIndex],
-            getCardPosition(depth, layout),
+            deckOpen.current
+              ? getFannedCardPosition(depth)
+              : getCardPosition(depth, layout),
           );
         });
       },
@@ -143,16 +176,119 @@ export default function Cards() {
     };
   }, []);
 
+  const openDeck = () => {
+    if (
+      !window.matchMedia("(min-width: 961px)").matches ||
+      deckOpen.current ||
+      isAnimating.current
+    )
+      return;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    deckOpen.current = true;
+    setIsDeckOpen(true);
+    timeline.current?.kill();
+
+    if (reduceMotion) {
+      deckOrder.current.forEach((serviceIndex, depth) => {
+        gsap.set(
+          cardRefs.current[serviceIndex],
+          getFannedCardPosition(depth),
+        );
+      });
+      return;
+    }
+
+    isAnimating.current = true;
+    timeline.current = gsap.timeline({
+      defaults: { ease: "power3.out" },
+      onComplete: () => {
+        isAnimating.current = false;
+      },
+    });
+
+    deckOrder.current.forEach((serviceIndex, depth) => {
+      timeline.current.to(
+        cardRefs.current[serviceIndex],
+        {
+          ...getFannedCardPosition(depth),
+          duration: 0.52,
+        },
+        depth * 0.045,
+      );
+    });
+  };
+
+  const closeDeck = (selectedIndex) => {
+    if (!deckOpen.current || isAnimating.current) return;
+
+    const currentIndex = deckOrder.current[0];
+    const layout = getLayout();
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const remainingCards = deckOrder.current.filter(
+      (serviceIndex) =>
+        serviceIndex !== selectedIndex && serviceIndex !== currentIndex,
+    );
+    const nextOrder =
+      selectedIndex === currentIndex
+        ? [...deckOrder.current]
+        : [selectedIndex, ...remainingCards, currentIndex];
+
+    deckOpen.current = false;
+    setIsDeckOpen(false);
+    setActiveIndex(selectedIndex);
+    timeline.current?.kill();
+
+    if (reduceMotion) {
+      nextOrder.forEach((serviceIndex, depth) => {
+        gsap.set(
+          cardRefs.current[serviceIndex],
+          getCardPosition(depth, layout),
+        );
+      });
+      deckOrder.current = nextOrder;
+      cardRefs.current[selectedIndex]?.focus({ preventScroll: true });
+      return;
+    }
+
+    isAnimating.current = true;
+    timeline.current = gsap.timeline({
+      defaults: { ease: "power3.inOut" },
+      onComplete: () => {
+        deckOrder.current = nextOrder;
+        isAnimating.current = false;
+        cardRefs.current[selectedIndex]?.focus({ preventScroll: true });
+      },
+    });
+
+    nextOrder.forEach((serviceIndex, depth) => {
+      timeline.current.to(
+        cardRefs.current[serviceIndex],
+        {
+          ...getCardPosition(depth, layout),
+          duration: 0.5,
+        },
+        depth * 0.035,
+      );
+    });
+  };
+
   const selectService = (selectedIndex) => {
+    if (deckOpen.current) {
+      closeDeck(selectedIndex);
+      return;
+    }
+
     const currentIndex = deckOrder.current[0];
 
     if (selectedIndex === currentIndex || isAnimating.current) return;
 
-    const layout = window.matchMedia("(max-width: 640px)").matches
-      ? "compact"
-      : window.matchMedia("(max-width: 960px)").matches
-        ? "tablet"
-        : "desktop";
+    const layout = getLayout();
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -280,8 +416,23 @@ export default function Cards() {
     selectService((activeIndex + 1) % services.length);
   };
 
+  const handleCardClick = (index) => {
+    if (deckOpen.current) {
+      closeDeck(index);
+      return;
+    }
+
+    if (index === activeIndex) openDeck();
+  };
+
+  const handleCardKeyDown = (event, index) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    handleCardClick(index);
+  };
+
   return (
-    <section className="services-section">
+    <section className={`services-section ${isDeckOpen ? "is-deck-open" : ""}`}>
       <div className="services-shell">
         <div className="services-copy">
           <h1 className="services-title">Our Services</h1>
@@ -306,9 +457,7 @@ export default function Cards() {
                   aria-controls={`service-panel-${service.id}`}
                   id={`service-tab-${service.id}`}
                 >
-                  <span className="service-item-number">
-                    {service.number}
-                  </span>
+                  <span className="service-item-number">{service.number}</span>
                   <span className="service-item-title">{service.title}</span>
                   <svg
                     className="service-item-arrow"
@@ -359,7 +508,11 @@ export default function Cards() {
             </button>
           </div>
 
-          <div className="services-deck">
+          <div
+            className={`services-deck ${isDeckOpen ? "is-open" : ""}`}
+            role={isDeckOpen ? "listbox" : undefined}
+            aria-label="Service card deck"
+          >
             {services.map((service, index) => {
               const isActive = index === activeIndex;
 
@@ -370,10 +523,32 @@ export default function Cards() {
                     cardRefs.current[index] = element;
                   }}
                   className={`service-card ${isActive ? "is-active" : ""}`}
-                  role={isActive ? "tabpanel" : undefined}
+                  role={
+                    isDeckOpen
+                      ? "option"
+                      : isActive && canFanDeck
+                        ? "button"
+                        : isActive
+                          ? "tabpanel"
+                          : undefined
+                  }
                   id={`service-panel-${service.id}`}
                   aria-labelledby={`service-tab-${service.id}`}
-                  aria-hidden={!isActive}
+                  aria-hidden={!isDeckOpen && !isActive}
+                  aria-selected={isDeckOpen ? isActive : undefined}
+                  aria-expanded={
+                    !isDeckOpen && isActive && canFanDeck ? false : undefined
+                  }
+                  aria-label={
+                    isDeckOpen
+                      ? `Select ${service.title}`
+                      : isActive && canFanDeck
+                        ? "Open the service card deck"
+                        : undefined
+                  }
+                  tabIndex={isDeckOpen || (isActive && canFanDeck) ? 0 : -1}
+                  onClick={() => handleCardClick(index)}
+                  onKeyDown={(event) => handleCardKeyDown(event, index)}
                 >
                   <div className="service-card-content">
                     <h3 className="service-card-title">{service.title}</h3>
@@ -388,6 +563,11 @@ export default function Cards() {
                       ))}
                     </ul>
                   </div>
+
+                  <span className="service-card-fan-label" aria-hidden="true">
+                    <span>{service.number}</span>
+                    {service.title}
+                  </span>
                 </article>
               );
             })}
