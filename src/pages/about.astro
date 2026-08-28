@@ -12,6 +12,7 @@ const team = [
       "Today, I combine my background in finance, accounts receivable, billing, and financial analysis with a commitment to helping healthcare providers maintain healthy revenue cycles. My goal is to provide accurate, dependable medical billing services so providers can spend less time worrying about administrative tasks and more time focusing on their patients.",
     ],
     color: "green",
+    image: "/img/Elizabeth.jpeg",
   },
   {
     name: "Lizbeth",
@@ -21,6 +22,7 @@ const team = [
       "While my focus is medical billing, I also have experience in data analytics and enjoy using data to identify patterns, improve processes, and support better decision-making. Whether that’s through business analytics or evaluating patient outcomes, I believe data can be a powerful tool for helping organizations grow. My goal is to provide accurate, reliable medical billing while bringing an analytical perspective that adds value beyond the day-to-day.",
     ],
     color: "navy",
+    image: "/img/Lizbeth.JPG",
   },
 ];
 ---
@@ -212,18 +214,26 @@ const team = [
       overflow: hidden;
       background: var(--primary-white);
 
-      .image-placeholder {
-        min-height: 280px;
+      .team-photo {
+        display: block;
+        align-self: start;
+        width: 100%;
+        height: clamp(24rem, 40vw, 34rem);
+        min-height: 0;
+        object-fit: cover;
+        object-position: center 25%;
+        vertical-align: middle;
+        font-style: italic;
+        background-repeat: no-repeat;
+        background-size: cover;
+        shape-margin: 1rem;
         border: 0;
         border-radius: 0;
         box-shadow: none;
 
-        &.is-navy {
-          background: var(--primary-navy);
-        }
-
         @media (width <= 760px) {
-          min-height: 240px;
+          height: clamp(20rem, 85vw, 32rem);
+          min-height: 0;
           border-right: 0;
           border-bottom: 1px solid var(--primary-green);
         }
@@ -235,7 +245,7 @@ const team = [
     }
 
     .team-copy {
-      align-self: center;
+      align-self: start;
       padding: clamp(1.75rem, 4vw, 3rem);
 
       h3 {
@@ -315,10 +325,12 @@ const team = [
           {
             team.map((member) => (
               <article class="team-card">
-                <div
-                  class:list={["image-placeholder", `is-${member.color}`]}
-                  role="img"
-                  aria-label={`${member.name} portrait placeholder`}
+                <img
+                  class="team-photo"
+                  src={member.image}
+                  alt={`${member.name}, ${member.role}`}
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div class="team-copy">
                   <p class="team-role">{member.role}</p>
