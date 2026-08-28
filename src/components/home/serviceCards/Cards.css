@@ -450,6 +450,7 @@
 
     .services-selector-number {
       margin-right: 0.35rem;
+      font-family: var(--font-noto-sans);
     }
 
     .services-deck {
