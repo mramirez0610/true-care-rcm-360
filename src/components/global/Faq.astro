@@ -1,0 +1,234 @@
+---
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  title: string;
+  items: FaqItem[];
+  id?: string;
+  eyebrow?: string;
+  description?: string;
+}
+
+const {
+  title,
+  items,
+  id = "faq",
+  eyebrow = "Frequently Asked Questions",
+  description,
+} = Astro.props;
+
+const titleId = `${id}-title`;
+---
+
+<style>
+  .faq {
+    padding: clamp(5rem, 1vw, 8rem) 1.5rem;
+    border-top: var(--primary-gold) 4px solid;
+    /* background: var(--primary-white); */
+    background: color-mix(
+      in srgb,
+      var(--primary-green) 8%,
+      var(--primary-white)
+    );
+    color: var(--primary-navy);
+
+    .faq-layout {
+      display: flex;
+      width: min(100%, 1180px);
+      margin-inline: auto;
+      align-items: flex-start;
+      gap: clamp(4rem, 9vw, 8rem);
+    }
+
+    .faq-intro {
+      flex: 0 1 30rem;
+
+      .eyebrow {
+        display: inline-block;
+        margin-bottom: 0.75rem;
+        color: var(--primary-green);
+        font-family: var(--font-noto-sans);
+        font-size: clamp(0.82rem, 1vw, 0.95rem);
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        line-height: 1.3;
+        text-transform: uppercase;
+      }
+
+      h2 {
+        margin: 0;
+        color: var(--primary-navy);
+        font-family: var(--font-noto-serif);
+        font-size: clamp(1.85rem, 2vw, 2.75rem);
+        line-height: 1.1;
+        text-wrap: balance;
+      }
+
+      p {
+        margin: 0;
+        color: var(--primary-navy);
+        font-family: var(--font-noto-sans);
+        font-size: clamp(0.95rem, 1.2vw, 1.08rem);
+        line-height: 1.65;
+      }
+    }
+
+    .faq-divider {
+      width: 76px;
+      height: 3px;
+      margin: 1.25rem 0;
+      border-radius: 999px;
+      background: var(--primary-gold);
+    }
+
+    .faq-list {
+      flex: 1 1 36rem;
+      min-width: 0;
+      border-top: 1px solid
+        color-mix(in srgb, var(--primary-navy) 20%, transparent);
+    }
+
+    details {
+      border-bottom: 1px solid
+        color-mix(in srgb, var(--primary-navy) 20%, transparent);
+
+      &[open] {
+        .faq-icon::after {
+          transform: translateY(-50%) rotate(0deg);
+        }
+      }
+    }
+
+    summary {
+      display: flex;
+      min-height: 7rem;
+      padding: 1.75rem 0;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      color: var(--primary-navy);
+      font-family: var(--font-noto-serif);
+      font-size: clamp(1.35rem, 1.65vw, 1.8rem);
+      font-weight: 700;
+      line-height: 1.2;
+      cursor: pointer;
+      list-style: none;
+
+      &::-webkit-details-marker {
+        display: none;
+      }
+
+      > span:first-child {
+        font-family: inherit;
+      }
+
+      &:hover {
+        color: var(--primary-green);
+      }
+
+      &:focus-visible {
+        border-radius: 3px;
+        outline: 2px solid var(--primary-gold);
+        outline-offset: 4px;
+      }
+    }
+
+    .faq-icon {
+      position: relative;
+      flex: 0 0 1.5rem;
+      width: 1.5rem;
+      aspect-ratio: 1;
+      color: var(--primary-gold);
+
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        border-radius: 999px;
+        background: currentColor;
+        transform: translateY(-50%);
+        transition: transform 180ms ease;
+      }
+
+      &::after {
+        transform: translateY(-50%) rotate(90deg);
+      }
+    }
+
+    .faq-answer {
+      max-width: 42rem;
+      margin: 0;
+      padding: 0 3rem 2rem 0;
+      color: var(--primary-navy);
+      font-family: var(--font-noto-sans);
+      font-size: 0.98rem;
+      line-height: 1.65;
+    }
+
+    @media (width <= 800px) {
+      .faq-layout {
+        flex-direction: column;
+        gap: 3rem;
+      }
+
+      .faq-intro,
+      .faq-list {
+        flex: none;
+        width: 100%;
+      }
+    }
+
+    @media (width <= 520px) {
+      padding: 4rem 1rem;
+
+      summary {
+        min-height: 0;
+        padding: 1.5rem 0;
+        gap: 1rem;
+      }
+
+      .faq-answer {
+        padding-right: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .faq-icon::before,
+      .faq-icon::after {
+        transition: none;
+      }
+    }
+  }
+</style>
+
+<section class="faq" id={id} aria-labelledby={titleId}>
+  <div class="faq-layout">
+    <header class="faq-intro">
+      <span class="eyebrow">{eyebrow}</span>
+      <h2 id={titleId}>{title}</h2>
+      <div class="faq-divider" aria-hidden="true"></div>
+      {description && <p>{description}</p>}
+    </header>
+
+    <div class="faq-list">
+      {
+        items.map((item) => (
+          <details>
+            <summary>
+              <span>{item.question}</span>
+              <span class="faq-icon" aria-hidden="true" />
+            </summary>
+            <p class="faq-answer">{item.answer}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
