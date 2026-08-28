@@ -7,8 +7,11 @@ import react from "@astrojs/react";
 
 import icon from "astro-icon";
 
+import sitemap from "@astrojs/sitemap";
+
 // https://astro.build/config
 export default defineConfig({
+  site: "https://truecarercm360solutions.com",
   fonts: [
     {
       provider: fontProviders.fontsource(),
@@ -28,5 +31,6 @@ export default defineConfig({
     icon({
       include: { gg: ["menu"] },
     }),
+    sitemap(),
   ],
 });
