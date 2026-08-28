@@ -63,46 +63,87 @@ const reasons = [
       gap: 1.5rem;
     }
 
-    .card {
-      display: flex;
-      min-height: 230px;
-      padding: 1.75rem;
-      flex-direction: column;
-      align-items: flex-start;
-      border: 1px solid var(--primary-green);
+    .card-link {
+      display: block;
+      height: 100%;
       border-radius: 28px;
-      background: var(--primary-white);
-      box-shadow: 0 12px 28px rgba(9, 33, 59, 0.12);
       color: var(--primary-navy);
+      text-decoration: none;
 
-      h3 {
-        margin: 0;
-        font-family: var(--font-noto-serif);
-        font-size: clamp(1.15rem, 1.55vw, 1.4rem);
-        line-height: 1.25;
+      &:hover {
+        .card {
+          border-color: var(--primary-gold);
+          box-shadow: 0 16px 32px rgba(9, 33, 59, 0.18);
+          transform: translateY(-3px);
+          scale: 1.01;
+
+          h3 {
+            /* color: var(--primary-green); */
+          }
+
+          .card-arrow {
+            opacity: 1;
+            transform: translate(3px, -3px);
+          }
+        }
       }
 
-      p {
-        margin: 0 0 1.5rem;
-        color: var(--primary-navy);
-        font-size: 0.98rem;
-        line-height: 1.55;
+      &:focus-visible {
+        outline: 2px solid var(--primary-gold);
+        outline-offset: 4px;
+
+        .card-arrow {
+          opacity: 1;
+          transform: translate(3px, -3px);
+        }
       }
 
-      a {
-        margin-top: auto;
+      .card {
+        position: relative;
+        box-sizing: border-box;
+        display: flex;
+        height: 100%;
+        min-height: 230px;
+        padding: 1.75rem 3.5rem 1.75rem 1.75rem;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        border: 1px solid var(--primary-green);
+        border-radius: 28px;
+        background: var(--primary-white);
+        box-shadow: 0 12px 28px rgba(9, 33, 59, 0.12);
         color: var(--primary-navy);
-        font-weight: 700;
-        text-underline-offset: 0.2em;
+        transition:
+          border-color 180ms ease,
+          box-shadow 180ms ease,
+          transform 180ms ease,
+          scale 180ms ease;
 
-        &:hover {
-          color: var(--primary-green);
+        h3 {
+          margin: 0;
+          font-family: var(--font-noto-serif);
+          font-size: clamp(1.15rem, 1.55vw, 1.4rem);
+          line-height: 1.25;
         }
 
-        &:focus-visible {
-          border-radius: 2px;
-          outline: 2px solid var(--primary-gold);
-          outline-offset: 4px;
+        p {
+          margin: 0;
+          color: var(--primary-navy);
+          font-size: 0.98rem;
+          line-height: 1.55;
+        }
+
+        .card-arrow {
+          position: absolute;
+          right: 1.75rem;
+          bottom: 1.5rem;
+          color: var(--primary-green);
+          font-size: 1.15rem;
+          line-height: 1;
+          opacity: 0.65;
+          transition:
+            opacity 180ms ease,
+            transform 180ms ease;
         }
       }
     }
@@ -163,15 +204,14 @@ const reasons = [
     <div class="cards">
       {
         reasons.map((reason) => (
-          <article class="card">
-            <h3>{reason.title}</h3>
-            <div class="card-divider" aria-hidden="true" />
-            <p>{reason.description}</p>
-            <a href="/why-us">
-              Learn More
-              <span aria-hidden="true"> &gt;</span>
-            </a>
-          </article>
+          <a class="card-link" href="/why-us">
+            <article class="card">
+              <h3>{reason.title}</h3>
+              <div class="card-divider" aria-hidden="true" />
+              <p>{reason.description}</p>
+              <span class="card-arrow" aria-hidden="true">↗</span>
+            </article>
+          </a>
         ))
       }
     </div>
