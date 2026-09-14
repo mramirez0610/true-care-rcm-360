@@ -7,6 +7,7 @@ import WhyUs from "../components/home/whyUs/WhyUs.astro";
 import OurProcess from "../components/home/process/OurProcess.astro";
 import Faq from "../components/global/Faq.astro";
 import Contact from "../components/contact/Contact.astro";
+import ConsultationButton from "../components/global/ConsultationButton.astro";
 
 const faqItems = [
   {
@@ -56,13 +57,15 @@ const faqItems = [
     textAlign="flex-start"
     color="#5a7964"
     justify="space-between"
-    cta={{
-      text: "SCHEDULE A FREE CONSULTATION",
-      href: "#contact",
-      variant: "secondary",
-    }}
     icon="/assets/icons/peopleGroup.svg"
-  />
+  >
+    <ConsultationButton
+      slot="action"
+      cta="SCHEDULE A FREE CONSULTATION"
+      variant="secondary"
+      showIcon={false}
+    />
+  </Banner>
   <WhyUs />
   <OurProcess />
   <Faq

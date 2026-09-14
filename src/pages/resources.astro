@@ -2,6 +2,7 @@
 import Main from "../layouts/Main.astro";
 import PageHero from "../components/global/PageHero.astro";
 import Faq from "../components/global/Faq.astro";
+import ConsultationButton from "../components/global/ConsultationButton.astro";
 
 const resourceGroups = [
   {
@@ -398,7 +399,9 @@ const faqItems = [
       description="Straightforward billing education and practical tools to help your practice understand the work behind every claim."
       image="/img/WhyUs.jpg"
       imagePosition="35% 55%"
-    />
+    >
+      <ConsultationButton slot="action" showIcon={false} />
+    </PageHero>
 
     <section class="library" aria-labelledby="library-title">
       <div class="container">
@@ -494,5 +497,6 @@ const faqItems = [
       description="Start with a few of the questions practices commonly ask. If you need something more specific, we’re happy to talk it through."
       items={faqItems}
     />
+
   </main>
 </Main>

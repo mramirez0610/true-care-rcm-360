@@ -3,6 +3,7 @@ import Main from "../layouts/Main.astro";
 import Banner from "../components/home/banner/Banner.astro";
 import PageHero from "../components/global/PageHero.astro";
 import Button from "../components/global/Button.astro";
+import ConsultationButton from "../components/global/ConsultationButton.astro";
 
 const reasons = [
   {
@@ -288,7 +289,9 @@ const commitments = [
       description="Revenue cycle management should give your practice more confidence, not more complexity. We bring an attentive, organized approach to the work behind every claim."
       image="/img/WhyUs.jpg"
       imagePosition="35% 55%"
-    />
+    >
+      <ConsultationButton slot="action" showIcon={false} />
+    </PageHero>
 
     <section class="reasons-section" aria-labelledby="difference-title">
       <div class="container">
@@ -301,7 +304,7 @@ const commitments = [
             thoughtful follow-through, and the needs of your practice.
           </p>
           <div class="buttons">
-            <Button cta="Get In Touch" />
+            <Button cta="Get In Touch" href="/#contact" />
           </div>
         </header>
 
@@ -329,13 +332,14 @@ const commitments = [
       textAlign="flex-start"
       color="#5a7964"
       justify="space-between"
-      cta={{
-        text: "Schedule a Free Consultation",
-        href: "/#contact",
-        variant: "secondary",
-      }}
       icon="/assets/icons/peopleGroup.svg"
-    />
+    >
+      <ConsultationButton
+        slot="action"
+        variant="secondary"
+        showIcon={false}
+      />
+    </Banner>
 
     <section class="partnership-section" aria-labelledby="partnership-title">
       <div class="container partnership-grid">

@@ -1,0 +1,27 @@
+---
+import Button from "./Button.astro";
+
+interface Props {
+  cta?: string;
+  variant?: "primary" | "secondary";
+  showIcon?: boolean;
+}
+
+const {
+  cta = "Schedule a Free Consultation",
+  variant = "primary",
+  showIcon = true,
+} = Astro.props;
+
+const consultationUrl = "https://calendly.com/marcoramirezmail/30min";
+---
+
+<Button
+  cta={cta}
+  href={consultationUrl}
+  icon={showIcon ? "/assets/icons/calendar.svg" : undefined}
+  variant={variant}
+  target="_blank"
+  rel="noopener noreferrer"
+  ariaLabel={`${cta} (opens in a new tab)`}
+/>

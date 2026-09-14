@@ -1,5 +1,6 @@
 ---
 import Button from "../../global/Button.astro";
+import ConsultationButton from "../../global/ConsultationButton.astro";
 ---
 
 <style>
@@ -144,13 +145,7 @@ import Button from "../../global/Button.astro";
     </p>
   </section>
   <section class="cta-buttons">
-    <Button
-      cta="Get a Free Consultation"
-      ,
-      href="#contact"
-      ,
-      icon="/assets/icons/calendar.svg"
-    />
-    <Button cta="Our Services" variant="secondary" />
+    <ConsultationButton cta="Get a Free Consultation" />
+    <Button cta="Our Services" href="/services" variant="secondary" />
   </section>
 </section>

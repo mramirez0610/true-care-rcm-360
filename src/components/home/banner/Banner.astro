@@ -17,6 +17,7 @@ const copyTextAlign =
     : textAlign === "flex-end"
       ? "end"
       : textAlign;
+const hasActionSlot = Astro.slots.has("action");
 ---
 
 <style>
@@ -135,14 +136,18 @@ const copyTextAlign =
     </div>
 
     {
-      cta && (
+      (cta || hasActionSlot) && (
         <div class="cta-banner-action">
-          <Button
-            cta={cta.text}
-            href={cta.href || "#"}
-            variant={cta.variant}
-            icon={cta.icon}
-          />
+          {hasActionSlot ? (
+            <slot name="action" />
+          ) : (
+            <Button
+              cta={cta.text}
+              href={cta.href || "#"}
+              variant={cta.variant}
+              icon={cta.icon}
+            />
+          )}
         </div>
       )
     }

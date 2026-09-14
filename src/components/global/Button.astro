@@ -1,6 +1,23 @@
 ---
-// const { cta, color = "#f8f8f8", icon, href="#" } = Astro.props;
-const { cta, href = "#", icon, variant = "primary" } = Astro.props;
+interface Props {
+  cta: string;
+  href?: string;
+  icon?: string;
+  variant?: "primary" | "secondary";
+  target?: string;
+  rel?: string;
+  ariaLabel?: string;
+}
+
+const {
+  cta,
+  href = "#",
+  icon,
+  variant = "primary",
+  target,
+  rel,
+  ariaLabel,
+} = Astro.props;
 ---
 
 <style>
@@ -32,11 +49,18 @@ const { cta, href = "#", icon, variant = "primary" } = Astro.props;
     color: var(--primary-navy);
     border-color: var(--primary-navy);
   }
+
+  .button span {
+    white-space: nowrap;
+  }
 </style>
 
 <a
   class={`button ${variant === "secondary" ? "button--secondary" : ""}`}
   href={href}
+  target={target}
+  rel={rel}
+  aria-label={ariaLabel}
 >
   {
     icon ? (

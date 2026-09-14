@@ -14,6 +14,8 @@ const {
   description,
   imagePosition = "center center",
 } = Astro.props;
+
+const hasActionSlot = Astro.slots.has("action");
 ---
 
 <style lang="scss">
@@ -89,12 +91,20 @@ const {
       background: var(--primary-gold);
     }
 
+    .hero-action {
+      margin-top: 1.75rem;
+    }
+
     @media (width <= 760px) {
       min-height: 27rem;
 
       .hero-content {
         width: calc(100% - 2rem);
         padding: 1rem 0;
+      }
+
+      .hero-action :global(.button) {
+        width: min(100%, 250px);
       }
     }
   }
@@ -115,5 +125,6 @@ const {
     <h1 id="page-hero-title">{title}</h1>
     {description && <p class="hero-description">{description}</p>}
     <div class="hero-divider" aria-hidden="true"></div>
+    {hasActionSlot && <div class="hero-action"><slot name="action" /></div>}
   </div>
 </section>
