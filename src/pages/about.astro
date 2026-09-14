@@ -160,9 +160,9 @@ const team = [
     }
 
     .team-card {
-      /* border: 1px solid var(--primary-green); */
+      border: 1px solid var(--border-color);
       border-radius: 28px;
-      box-shadow: 0 12px 28px rgb(9 33 59 / 12%);
+      box-shadow: 0 14px 34px rgb(9 33 59 / 11%);
     }
 
     .image-placeholder {
@@ -205,21 +205,36 @@ const team = [
 
     .team-list {
       display: grid;
-      gap: 1.5rem;
+      gap: clamp(1.5rem, 3vw, 2.25rem);
     }
 
     .team-card {
       display: grid;
-      grid-template-columns: minmax(240px, 0.7fr) minmax(0, 1.3fr);
+      grid-template-columns: minmax(16rem, 0.72fr) minmax(0, 1.28fr);
+      align-items: stretch;
       overflow: hidden;
       background: var(--primary-white);
 
+      .team-media {
+        position: relative;
+        min-height: clamp(22rem, 30vw, 28rem);
+        overflow: hidden;
+        border-right: 1px solid rgb(90 121 100 / 18%);
+
+        @media (width <= 900px) {
+          height: min(calc(100vw - 2rem), 24rem);
+          min-height: 0;
+          border-right: 0;
+          border-bottom: 1px solid rgb(90 121 100 / 24%);
+        }
+      }
+
       .team-photo {
+        position: absolute;
+        inset: 0;
         display: block;
-        align-self: start;
         width: 100%;
-        height: clamp(24rem, 40vw, 34rem);
-        min-height: 0;
+        height: 100%;
         object-fit: cover;
         object-position: center 25%;
         vertical-align: middle;
@@ -230,23 +245,21 @@ const team = [
         border: 0;
         border-radius: 0;
         box-shadow: none;
-
-        @media (width <= 760px) {
-          height: clamp(20rem, 85vw, 32rem);
-          min-height: 0;
-          border-right: 0;
-          border-bottom: 1px solid var(--primary-green);
-        }
       }
 
-      @media (width <= 760px) {
+      @media (width <= 900px) {
         grid-template-columns: 1fr;
       }
     }
 
     .team-copy {
-      align-self: start;
+      align-self: center;
       padding: clamp(1.75rem, 4vw, 3rem);
+
+      @media (width <= 900px) {
+        align-self: start;
+        padding: 1.5rem clamp(1.25rem, 5vw, 1.75rem) 1.75rem;
+      }
 
       h3 {
         margin: 0;
@@ -257,7 +270,7 @@ const team = [
       .description p {
         margin: 0;
         font-size: clamp(0.96rem, 1vw, 1.05rem);
-        /* line-height: 1.65; */
+        line-height: 1.55;
       }
 
       .description p + p {
@@ -328,13 +341,15 @@ const team = [
           {
             team.map((member) => (
               <article class="team-card">
-                <img
-                  class="team-photo"
-                  src={member.image}
-                  alt={`${member.name}, ${member.role}`}
-                  loading="lazy"
-                  decoding="async"
-                />
+                <div class="team-media">
+                  <img
+                    class="team-photo"
+                    src={member.image}
+                    alt={`${member.name}, ${member.role}`}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
                 <div class="team-copy">
                   <p class="team-role">{member.role}</p>
                   <h3>{member.name}</h3>

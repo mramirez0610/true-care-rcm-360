@@ -79,7 +79,7 @@
     column-gap: 0.6rem;
     row-gap: 0.25rem;
     align-items: center;
-    border: 1px solid rgba(90, 121, 100, 0.38);
+    border: 1px solid var(--border-color);
     border-radius: 11px;
     background: rgba(255, 255, 255, 0.82);
     padding: 0.65rem;
@@ -94,7 +94,7 @@
       box-shadow 180ms ease;
 
     &:hover {
-      border-color: var(--primary-green);
+      border-color: var(--border-color);
       background: rgba(255, 255, 255, 0.92);
       box-shadow: 0 7px 18px rgba(17, 44, 59, 0.06);
       transform: translateY(-2px);
@@ -112,7 +112,7 @@
 
     &.is-active {
       background: var(--primary-green);
-      border-color: var(--primary-green);
+      border-color: var(--border-color);
       color: var(--primary-white);
       box-shadow: 0 8px 18px rgba(16, 43, 58, 0.1);
       transform: translateY(-1px);
@@ -233,7 +233,7 @@
 
         &:hover,
         &:focus-visible {
-          border-color: var(--primary-gold);
+          border-color: var(--border-color);
           box-shadow: 0 20px 42px rgba(9, 33, 59, 0.2);
         }
       }
@@ -254,7 +254,7 @@
     width: 100%;
     min-height: 360px;
     border-radius: 28px;
-    border: 2px solid rgba(90, 121, 100, 0.72);
+    border: 2px solid var(--border-color);
     /* border: 2px solid var(--primary-navy); */
     background: #fff;
     box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
