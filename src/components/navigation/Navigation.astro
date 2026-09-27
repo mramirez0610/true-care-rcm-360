@@ -1,16 +1,25 @@
 ---
+import {
+  getLocaleFromPath,
+  getLocalizedPath,
+  getTranslations,
+  stripLocaleFromPath,
+} from "../../i18n/translations";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+const t = getTranslations(locale);
 const links = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About Us" },
-  { href: "/services", label: "Services" },
-  { href: "/why-us", label: "Why Us" },
-  { href: "/resources", label: "Resources" },
-  { href: "/#contact", label: "Contact" },
+  { href: "/", label: t.common.nav.home },
+  { href: "/about", label: t.common.nav.about },
+  { href: "/services", label: t.common.nav.services },
+  { href: "/why-us", label: t.common.nav.whyUs },
+  { href: "/resources", label: t.common.nav.resources },
+  { href: "/#contact", label: t.common.nav.contact },
 ];
 
 const normalizePath = (path: string) =>
   path === "/" ? path : path.replace(/\/$/, "");
-const currentPath = normalizePath(Astro.url.pathname);
+const currentPath = normalizePath(stripLocaleFromPath(Astro.url.pathname));
 ---
 
 <style>
@@ -44,7 +53,9 @@ const currentPath = normalizePath(Astro.url.pathname);
       position: fixed;
       inset: 0;
       z-index: 11;
-      width: 100vw;
+      width: 100%;
+      max-width: none;
+      min-height: 100svh;
       height: 100vh;
       height: 100dvh;
       padding: calc(var(--header-size) + 2rem) clamp(1.5rem, 8vw, 4rem) 3rem;
@@ -88,14 +99,17 @@ const currentPath = normalizePath(Astro.url.pathname);
   }
 </style>
 
-<nav id="main-menu" class="nav" aria-label="Main navigation">
+<nav id="main-menu" class="nav" aria-label={t.common.navLabel}>
   {
     links.map(({ href, label }) => {
       const linkPath = normalizePath(href.split("#")[0]);
       const isCurrent = currentPath === linkPath && href !== "/#contact";
 
       return (
-        <a href={href} aria-current={isCurrent ? "page" : undefined}>
+        <a
+          href={getLocalizedPath(href, locale)}
+          aria-current={isCurrent ? "page" : undefined}
+        >
           {label}
         </a>
       );
@@ -156,7 +170,9 @@ const currentPath = normalizePath(Astro.url.pathname);
       menuButton.setAttribute("aria-expanded", String(isOpen));
       menuButton.setAttribute(
         "aria-label",
-        isOpen ? "Close main menu" : "Open main menu",
+        isOpen
+          ? (menuButton.dataset.closeLabel ?? "Close main menu")
+          : (menuButton.dataset.openLabel ?? "Open main menu"),
       );
       document.body.style.overflow = isOpen ? "hidden" : "";
     };

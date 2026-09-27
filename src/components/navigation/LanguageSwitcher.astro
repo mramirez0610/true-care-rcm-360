@@ -1,0 +1,79 @@
+---
+import {
+  getLocaleFromPath,
+  getLocalizedPath,
+  getTranslations,
+  stripLocaleFromPath,
+} from "../../i18n/translations";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+const t = getTranslations(locale);
+const routePath = stripLocaleFromPath(Astro.url.pathname);
+const hash = Astro.url.hash;
+---
+
+<style>
+  .language-switcher {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.2rem;
+    border: 1px solid color-mix(in srgb, var(--primary-navy) 28%, transparent);
+    border-radius: 999px;
+    background: white;
+    font-family: var(--font-noto-sans);
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  a {
+    display: grid;
+    min-width: 2rem;
+    min-height: 1.75rem;
+    padding-inline: 0.35rem;
+    place-items: center;
+    border-radius: 999px;
+    color: var(--primary-navy);
+    text-decoration: none;
+  }
+
+  a[aria-current="true"] {
+    background: var(--primary-green);
+    color: white;
+  }
+
+  a:focus-visible {
+    outline: 2px solid var(--primary-gold);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 900px) {
+    .language-switcher {
+      position: relative;
+      z-index: 12;
+    }
+  }
+</style>
+
+<nav class="language-switcher" aria-label={t.common.languageLabel}>
+  <a
+    href={`${getLocalizedPath(routePath, "en")}${hash}`}
+    lang="en"
+    hreflang="en"
+    aria-label={t.common.viewInEnglish}
+    aria-current={locale === "en" ? "true" : undefined}
+  >
+    EN
+  </a>
+  <a
+    href={`${getLocalizedPath(routePath, "es")}${hash}`}
+    lang="es"
+    hreflang="es"
+    aria-label={t.common.viewInSpanish}
+    aria-current={locale === "es" ? "true" : undefined}
+  >
+    ES
+  </a>
+</nav>

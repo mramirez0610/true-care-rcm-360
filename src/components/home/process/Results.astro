@@ -1,25 +1,14 @@
 ---
-const results = [
-  {
-    title: "Cleaner Claims",
-    description: "Reduce billing errors before they become denials.",
-    icon: "/assets/icons/clipboard.svg",
-  },
-  {
-    title: "Fewer Delays",
-    description: "Keep claims moving with timely submission and follow-up.",
-    icon: "/assets/icons/clock.svg",
-  },
-  {
-    title: "Better Revenue Visibility",
-    description: "Know what is paid, pending, and needs attention.",
-    icon: "/assets/icons/cash.svg",
-  },
-  {
-    title: "More Time for Clients",
-    description: "Spend less time on billing and more time with patients.",
-    icon: "/assets/icons/heart2.svg",
-  },
+import { getLocaleFromPath, getTranslations } from "../../../i18n/translations";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+const t = getTranslations(locale);
+const copy = t.home.results;
+const icons = [
+  "/assets/icons/clipboard.svg",
+  "/assets/icons/clock.svg",
+  "/assets/icons/cash.svg",
+  "/assets/icons/heart2.svg",
 ];
 ---
 
@@ -36,13 +25,13 @@ const results = [
       h2 {
         margin: 0;
         font-family: var(--font-noto-serif);
-        font-size: clamp(2rem, 3.2vw, 2.75rem);
+        font-size: var(--font-size-home-section);
         line-height: 1.1;
       }
 
       p {
         margin: 0;
-        font-size: clamp(0.95rem, 1.2vw, 1.08rem);
+        font-size: var(--font-size-lead);
         line-height: 1.65;
       }
     }
@@ -83,7 +72,7 @@ const results = [
       h3 {
         margin: 0 0 0.65rem;
         color: var(--primary-navy);
-        font-size: clamp(0.82rem, 1vw, 0.95rem);
+        font-size: var(--font-size-eyebrow);
         line-height: 1.3;
         text-transform: uppercase;
 
@@ -126,19 +115,16 @@ const results = [
 
 <section class="results" aria-labelledby="results-title">
   <header class="intro">
-    <h2 id="results-title">Results You Can Expect</h2>
+    <h2 id="results-title">{copy.title}</h2>
     <div class="title-divider" aria-hidden="true"></div>
-    <p>
-      Reliable billing support means fewer interruptions, faster reimbursements,
-      and more time to focus on patient care.
-    </p>
+    <p>{copy.description}</p>
   </header>
 
   <div class="cards">
     {
-      results.map((result) => (
+      copy.items.map((result, index) => (
         <article class="card">
-          <img src={result.icon} alt="" />
+          <img src={icons[index]} alt="" />
           <h3>{result.title}</h3>
           <p>{result.description}</p>
         </article>

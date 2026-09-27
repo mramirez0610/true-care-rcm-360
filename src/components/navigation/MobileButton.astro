@@ -1,3 +1,10 @@
+---
+import { getLocaleFromPath, getTranslations } from "../../i18n/translations";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+const t = getTranslations(locale);
+---
+
 <style>
   .mobile-button {
     display: none;
@@ -62,7 +69,9 @@
   type="button"
   aria-expanded="false"
   aria-controls="main-menu"
-  aria-label="Open main menu"
+  aria-label={t.common.openMenu}
+  data-open-label={t.common.openMenu}
+  data-close-label={t.common.closeMenu}
   class="mobile-button"
   id="mobile-button"
 >

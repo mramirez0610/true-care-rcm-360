@@ -3,6 +3,11 @@ import Navigation from "./Navigation.astro";
 import MobileButton from "./MobileButton.astro";
 import ConsultationButton from "../global/ConsultationButton.astro";
 import Logo from "./Logo.astro";
+import LanguageSwitcher from "./LanguageSwitcher.astro";
+import { getLocaleFromPath, getTranslations } from "../../i18n/translations";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+const t = getTranslations(locale);
 ---
 
 <style lang="scss">
@@ -24,9 +29,19 @@ import Logo from "./Logo.astro";
       0px 4px 8px 3px rgba(0, 0, 0, 0.15);
     // padding: 2% 5%;
 
+    @media (min-width: 901px) and (max-width: 1180px) {
+      :global(.nav) {
+        width: 58%;
+      }
+
+      .header-cta {
+        display: none;
+      }
+    }
+
     @media (max-width: 900px) {
       padding-inline: 1rem;
-      justify-content: flex-end;
+      justify-content: space-between;
 
       :global(.logo-link) {
         position: absolute;
@@ -45,10 +60,11 @@ import Logo from "./Logo.astro";
 </style>
 
 <header>
+  <LanguageSwitcher />
   <Logo />
   <MobileButton />
   <Navigation />
   <div class="header-cta">
-    <ConsultationButton cta="GET A FREE CONSULTATION" />
+    <ConsultationButton cta={t.common.consultationShort} />
   </div>
 </header>

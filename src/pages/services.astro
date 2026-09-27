@@ -1,11 +1,237 @@
 ---
 import Main from "../layouts/Main.astro";
 import ServiceCards from "../components/home/serviceCards/ServiceCards.astro";
+import Faq from "../components/global/Faq.astro";
+import PageCTA from "../components/global/PageCTA.astro";
+import { getLocaleFromPath, getTranslations } from "../i18n/translations";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+const t = getTranslations(locale);
+const copy = t.services;
 ---
 
-<Main
-  pageTitle="Our Services"
-  description="Explore medical billing and coding, claims submission, denial management, payment posting, A/R follow-up, and credentialing support for your practice."
->
-  <ServiceCards />
+<style>
+  .services-page {
+    background: var(--primary-white);
+    color: var(--primary-navy);
+  }
+
+  .service-fit {
+    padding: 5rem 1.5rem;
+    background: var(--primary-white);
+  }
+
+  .service-fit-inner {
+    display: grid;
+    width: min(100%, 1180px);
+    margin-inline: auto;
+    grid-template-columns: minmax(16rem, 18rem) minmax(0, 1fr);
+    gap: clamp(3rem, 5vw, 4rem);
+    align-items: stretch;
+  }
+
+  .service-fit-heading {
+    align-self: center;
+    max-width: 30rem;
+  }
+
+  .service-fit-heading h2,
+  .service-fit-item h3 {
+    margin: 0;
+    color: var(--primary-navy);
+    font-family: var(--font-noto-serif);
+  }
+
+  .service-fit-heading h2 {
+    font-size: var(--font-size-section);
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+
+  .service-fit-divider {
+    width: 76px;
+    height: 3px;
+    margin: 1.25rem 0;
+    border-radius: 999px;
+    background: var(--primary-gold);
+  }
+
+  .service-fit-heading p {
+    margin: 0;
+    font-size: var(--font-size-lead);
+    line-height: 1.65;
+  }
+
+  .service-fit-list {
+    position: relative;
+    min-height: 24.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .service-fit-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    display: flex;
+    width: 32%;
+    height: auto;
+    min-height: 15.5rem;
+    padding: 1.6rem;
+    flex-direction: column;
+    border: 1px solid var(--border-color);
+    border-radius: 28px;
+    background: rgb(255 255 255 / 48%);
+    box-shadow: 0 14px 30px rgb(9 33 59 / 4%);
+  }
+
+  .service-fit-item:nth-of-type(2) {
+    top: 4.5rem;
+    left: 34%;
+  }
+
+  .service-fit-item:nth-of-type(3) {
+    top: 9rem;
+    right: 0;
+    left: auto;
+  }
+
+  .service-fit-number {
+    display: block;
+    margin-bottom: 1.25rem;
+    color: var(--primary-green);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    line-height: 1.5;
+  }
+
+  .service-fit-item h3 {
+    font-size: var(--font-size-card-title);
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+
+  .service-fit-item p {
+    margin: 0.75rem 0 0;
+    font-size: var(--font-size-body);
+    line-height: 1.5;
+  }
+
+  .service-fit-flow {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  .service-fit-flow path {
+    fill: none;
+    stroke: var(--primary-gold);
+    stroke-linecap: round;
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  @media (width <= 960px) {
+    .service-fit {
+      padding: 4rem 1rem;
+    }
+
+    .service-fit-inner {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .service-fit-heading {
+      max-width: none;
+    }
+  }
+
+  @media (width <= 700px) {
+    .service-fit-list {
+      min-height: 0;
+    }
+
+    .service-fit-item {
+      position: relative;
+      top: auto;
+      right: auto;
+      left: auto;
+      width: 100%;
+      height: auto;
+      min-height: 0;
+      margin-bottom: 2rem;
+    }
+
+    .service-fit-item:nth-of-type(2),
+    .service-fit-item:nth-of-type(3) {
+      top: auto;
+      right: auto;
+      left: auto;
+    }
+
+    .service-fit-flow {
+      display: none;
+    }
+  }
+</style>
+
+<Main pageTitle={copy.metaTitle} description={copy.metaDescription}>
+  <main class="services-page">
+    <ServiceCards />
+
+    <section class="service-fit" aria-labelledby="service-fit-title">
+      <div class="service-fit-inner">
+        <header class="service-fit-heading">
+          <h2 id="service-fit-title">{copy.integrationTitle}</h2>
+          <div class="service-fit-divider" aria-hidden="true"></div>
+          <p>{copy.integrationDescription}</p>
+        </header>
+
+        <ol class="service-fit-list">
+          <svg
+            class="service-fit-flow"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <path d="M32 28 C33.5 28 32.5 41 34 41"></path>
+            <path d="M66 48 C67.5 48 66.5 61 68 61"></path>
+          </svg>
+          {
+            copy.integrationItems.map((item, index) => (
+              <li class="service-fit-item">
+                <span class="service-fit-number" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <Faq
+      id="services-faq"
+      eyebrow={copy.faqEyebrow}
+      title={copy.faqTitle}
+      description={copy.faqDescription}
+      items={copy.faqItems}
+    />
+
+    <PageCTA
+      title={copy.closingTitle}
+      description={copy.closingDescription}
+      consultationIntro={t.common.consultationIntro}
+      topics={copy.closingTopics}
+    />
+  </main>
 </Main>

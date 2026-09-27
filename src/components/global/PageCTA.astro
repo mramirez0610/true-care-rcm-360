@@ -1,0 +1,198 @@
+---
+import ConsultationButton from "./ConsultationButton.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  consultationIntro: string;
+  topics: {
+    emphasis: string;
+    detail: string;
+  }[];
+}
+
+const { title, description, consultationIntro, topics } = Astro.props;
+---
+
+<style>
+  .page-cta {
+    padding: 5rem 1.5rem;
+    border-top: 4px solid var(--primary-gold);
+    background: linear-gradient(
+      140deg,
+      color-mix(in srgb, var(--primary-green) 10%, white),
+      var(--primary-white) 70%
+    );
+    color: var(--primary-navy);
+  }
+
+  .page-cta-inner {
+    display: flex;
+    width: min(100%, 1180px);
+    margin-inline: auto;
+    align-items: center;
+    gap: clamp(3rem, 8vw, 7rem);
+  }
+
+  .page-cta-heading {
+    flex: 1 1 50rem;
+    min-width: 0;
+    max-width: 30rem;
+  }
+
+  .page-cta-heading::before {
+    content: "";
+    display: block;
+    width: 76px;
+    height: 3px;
+    margin-bottom: 1.75rem;
+    border-radius: 999px;
+    background: var(--primary-gold);
+  }
+
+  .page-cta h2 {
+    margin: 0;
+    color: var(--primary-navy);
+    font-family: var(--font-noto-serif);
+    font-size: var(--font-size-section);
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+
+  .page-cta-heading p {
+    max-width: 30rem;
+    margin: 1.5rem 0 0;
+    font-size: var(--font-size-lead);
+    line-height: 1.65;
+  }
+
+  .page-cta-action {
+    display: flex;
+    flex: 1 1 36rem;
+    min-width: 0;
+    max-width: 36rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.3rem;
+  }
+
+  .consultation-title {
+    margin: 0;
+    color: var(--primary-navy);
+    font-family: var(--font-noto-serif);
+    font-size: var(--font-size-card-title);
+    font-weight: 700;
+    line-height: 1.25;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  .page-cta-action ul {
+    display: grid;
+    width: 100%;
+    gap: 0.9rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .page-cta-action li {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.75rem;
+    font-size: var(--font-size-body);
+    font-weight: 500;
+    line-height: 1.55;
+    text-align: center;
+  }
+
+  .page-cta-action li strong {
+    font-weight: 700;
+  }
+
+  .page-cta-action li::before {
+    content: "";
+    flex: 0 0 auto;
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: var(--primary-gold);
+  }
+
+  .page-cta-action :global(.button) {
+    width: auto;
+    min-width: 250px;
+    max-width: 100%;
+    margin-top: 0.35rem;
+    padding-inline: 1.5rem;
+    align-self: center;
+  }
+
+  @media (width <= 860px) {
+    .page-cta {
+      padding: 4.5rem 1rem;
+    }
+
+    .page-cta-inner {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 3rem;
+    }
+
+    .page-cta-heading,
+    .page-cta-action {
+      flex: none;
+      width: 100%;
+      max-width: none;
+    }
+  }
+
+  @media (width <= 600px) {
+    .consultation-title {
+      text-align: left;
+    }
+
+    .page-cta-action li {
+      justify-content: flex-start;
+      text-align: left;
+    }
+
+    .page-cta-action :global(.button) {
+      width: 100%;
+      min-width: 0;
+      min-height: 50px;
+      height: auto;
+      padding-block: 0.7rem;
+    }
+
+    .page-cta-action :global(.button span) {
+      white-space: normal;
+      text-align: center;
+    }
+  }
+</style>
+
+<section class="page-cta" aria-labelledby="page-cta-title">
+  <div class="page-cta-inner">
+    <div class="page-cta-heading">
+      <h2 id="page-cta-title">{title}</h2>
+      <p>{description}</p>
+    </div>
+    <div class="page-cta-action">
+      <h3 class="consultation-title">{consultationIntro}</h3>
+      <ul>
+        {
+          topics.map((topic) => (
+            <li>
+              <span>
+                <strong>{topic.emphasis}</strong> {topic.detail}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+      <ConsultationButton showIcon={false} />
+    </div>
+  </div>
+</section>

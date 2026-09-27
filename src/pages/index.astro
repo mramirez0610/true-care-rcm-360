@@ -8,52 +8,29 @@ import OurProcess from "../components/home/process/OurProcess.astro";
 import Faq from "../components/global/Faq.astro";
 import Contact from "../components/contact/Contact.astro";
 import ConsultationButton from "../components/global/ConsultationButton.astro";
+import { getLocaleFromPath, getTranslations } from "../i18n/translations";
 
-const faqItems = [
-  {
-    question: "What services does TrueCare provide?",
-    answer:
-      "TrueCare supports medical billing and coding, claim submission, denial management, payment posting, accounts receivable follow-up, and provider credentialing.",
-  },
-  {
-    question: "Can you help with denied or unpaid claims?",
-    answer:
-      "Yes. We review claim issues, support corrections and appeals, and follow up on unpaid claims and aging balances to help keep revenue moving.",
-  },
-  {
-    question: "What information helps keep claims accurate?",
-    answer:
-      "Accurate patient and insurance information, payer details, required authorizations, and complete documentation all help reduce preventable claim issues.",
-  },
-  {
-    question: "How does TrueCare communicate and report?",
-    answer:
-      "We focus on clear updates and practical reporting so you can understand what is happening across your revenue cycle and identify useful trends.",
-  },
-  {
-    question: "How do I get started?",
-    answer:
-      "Schedule a free consultation so we can learn about your workflow, priorities, and goals and discuss the support that may fit your practice.",
-  },
-];
+const locale = getLocaleFromPath(Astro.url.pathname);
+const t = getTranslations(locale);
+const copy = t.home;
 ---
 
 <Main
-  pageTitle="Medical Billing & Revenue Cycle Management"
-  description="TrueCare RCM360 Solutions helps healthcare practices simplify medical billing, claims, denials, payment posting, A/R follow-up, and credentialing."
+  pageTitle={copy.metaTitle}
+  description={copy.metaDescription}
 >
   <Hero />
   <Banner
-    primaryText="Compassionate Care. Precise Billing. Better Results."
-    secondaryText="Your Practice Thrives. Your Patients Win."
+    primaryText={copy.careBanner.primary}
+    secondaryText={copy.careBanner.secondary}
     color="#0b2b3d"
     justify="center"
     icon="/assets/icons/heart.svg"
   />
   <WhatWeDo />
   <Banner
-    primaryText="Ready to Improve Your Cash Flow?"
-    secondaryText="Let's talk about how we can make your business thrive."
+    primaryText={copy.cashFlowBanner.primary}
+    secondaryText={copy.cashFlowBanner.secondary}
     textAlign="flex-start"
     color="#5a7964"
     justify="space-between"
@@ -61,7 +38,7 @@ const faqItems = [
   >
     <ConsultationButton
       slot="action"
-      cta="SCHEDULE A FREE CONSULTATION"
+      cta={t.common.consultation}
       variant="secondary"
       showIcon={false}
     />
@@ -70,9 +47,9 @@ const faqItems = [
   <OurProcess />
   <Faq
     id="faq"
-    title="Questions about billing support?"
-    description="Start with a few of the questions practices commonly ask. If you need something more specific, we’re happy to talk it through."
-    items={faqItems}
+    title={copy.faqTitle}
+    description={copy.faqDescription}
+    items={copy.faqItems}
   />
   <Contact />
 </Main>

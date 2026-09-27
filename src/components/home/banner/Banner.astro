@@ -62,7 +62,7 @@ const hasActionSlot = Astro.slots.has("action");
           line-height: 1.3;
           text-align: var(--copy-align);
 
-          h1 {
+          .primary-text {
             font-size: 1.15em;
             margin: 0;
             text-wrap: balance;
@@ -130,7 +130,7 @@ const hasActionSlot = Astro.slots.has("action");
         style={`--items-align: ${textAlign}; --copy-align: ${copyTextAlign};`}
       >
         <slot />
-        <h1 class="primary-text">{primaryText}</h1>
+        <p class="primary-text">{primaryText}</p>
         <div class="secondary-text">{secondaryText}</div>
       </div>
     </div>

@@ -4,6 +4,11 @@ import Header from "../components/navigation/Header.astro";
 import Footer from "../components/navigation/Footer.astro";
 import ScrollReveal from "../components/global/ScrollReveal.astro";
 import { Font } from "astro:assets";
+import {
+  getLocaleFromPath,
+  getLocalizedPath,
+  stripLocaleFromPath,
+} from "../i18n/translations";
 
 interface Props {
   pageTitle: string;
@@ -12,10 +17,14 @@ interface Props {
 }
 
 const { pageTitle, description, canonicalPath } = Astro.props;
-const canonicalURL = new URL(canonicalPath ?? Astro.url.pathname, Astro.site);
+const locale = getLocaleFromPath(Astro.url.pathname);
+const routePath = stripLocaleFromPath(canonicalPath ?? Astro.url.pathname);
+const canonicalURL = new URL(getLocalizedPath(routePath, locale), Astro.site);
+const englishURL = new URL(getLocalizedPath(routePath, "en"), Astro.site);
+const spanishURL = new URL(getLocalizedPath(routePath, "es"), Astro.site);
 ---
 
-<html lang="en">
+<html lang={locale}>
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -26,6 +35,9 @@ const canonicalURL = new URL(canonicalPath ?? Astro.url.pathname, Astro.site);
     <title>{pageTitle} | TrueCare RCM360 Solutions</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL.href} />
+    <link rel="alternate" hreflang="en" href={englishURL.href} />
+    <link rel="alternate" hreflang="es" href={spanishURL.href} />
+    <link rel="alternate" hreflang="x-default" href={englishURL.href} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <slot name="head" />
   </head>

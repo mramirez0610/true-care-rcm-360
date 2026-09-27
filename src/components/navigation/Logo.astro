@@ -1,5 +1,7 @@
 ---
+import { getLocaleFromPath, getLocalizedPath } from "../../i18n/translations";
 
+const locale = getLocaleFromPath(Astro.url.pathname);
 ---
 
 <style lang="scss">
@@ -17,7 +19,7 @@
   }
 </style>
 
-<a class="logo-link" href="/">
+<a class="logo-link" href={getLocalizedPath("/", locale)}>
   <img
     class="logo"
     src="/assets/logoComplete.svg"

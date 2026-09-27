@@ -12,6 +12,13 @@ import sitemap from "@astrojs/sitemap";
 // https://astro.build/config
 export default defineConfig({
   site: "https://truecarercm360solutions.com",
+  i18n: {
+    locales: ["en", "es"],
+    defaultLocale: "en",
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
   fonts: [
     {
       provider: fontProviders.fontsource(),

@@ -1,22 +1,18 @@
 ---
 import Button from "../../global/Button.astro";
+import {
+  getLocaleFromPath,
+  getLocalizedPath,
+  getTranslations,
+} from "../../../i18n/translations";
 
-const items = [
-  {
-    title: "Medical Billing & Coding",
-    description: "Accurate coding, clean claims, and faster reimbursement.",
-    icon: "/assets/icons/clipboard.svg",
-  },
-  {
-    title: "Claims Submission",
-    description: "Timely submission and follow-up so payments arrive sooner.",
-    icon: "/assets/icons/checklist.svg",
-  },
-  {
-    title: "Denial Management",
-    description: "Reduce denials, recover revenue, and protect your cash flow.",
-    icon: "/assets/icons/cash.svg",
-  },
+const locale = getLocaleFromPath(Astro.url.pathname);
+const t = getTranslations(locale);
+const copy = t.home.whatWeDo;
+const icons = [
+  "/assets/icons/clipboard.svg",
+  "/assets/icons/checklist.svg",
+  "/assets/icons/cash.svg",
 ];
 ---
 
@@ -44,7 +40,7 @@ const items = [
     display: inline-block;
     margin-bottom: 0.75rem;
     color: var(--primary-green);
-    font-size: clamp(0.82rem, 1vw, 0.95rem);
+    font-size: var(--font-size-eyebrow);
     font-weight: 700;
     letter-spacing: 0.08em;
     line-height: 1.3;
@@ -55,7 +51,7 @@ const items = [
     margin: 0;
     color: var(--primary-navy);
     font-family: var(--font-noto-serif);
-    font-size: clamp(2rem, 3.4vw, 3rem);
+    font-size: var(--font-size-home-section);
     line-height: 1.1;
   }
 
@@ -70,7 +66,7 @@ const items = [
   .what-we-do-text {
     margin: 0;
     color: var(--primary-navy);
-    font-size: clamp(0.95rem, 1.2vw, 1.08rem);
+    font-size: var(--font-size-lead);
     line-height: 1.65;
   }
 
@@ -113,14 +109,14 @@ const items = [
     margin: 0 0 0.75rem;
     color: #102a43;
     font-family: var(--font-noto-serif);
-    font-size: clamp(1.15rem, 1.55vw, 1.4rem);
+    font-size: var(--font-size-card-title);
     line-height: 1.25;
   }
 
   .what-we-do-card-text {
     margin: 0;
     color: #64748b;
-    font-size: 0.98rem;
+    font-size: var(--font-size-body);
     line-height: 1.55;
   }
 </style>
@@ -128,20 +124,17 @@ const items = [
 <section class="what-we-do">
   <div class="what-we-do-inner">
     <div class="what-we-do-content">
-      <span class="what-we-do-eyebrow">What We Can Do</span>
-      <h2 class="what-we-do-title">For You</h2>
+      <span class="what-we-do-eyebrow">{copy.eyebrow}</span>
+      <h2 class="what-we-do-title">{copy.title}</h2>
       <div class="what-we-do-divider"></div>
-      <p class="what-we-do-text">
-        Reliable billing support designed to help your practice reduce denials,
-        improve cash flow, and spend more time with patients.
-      </p>
+      <p class="what-we-do-text">{copy.description}</p>
     </div>
 
     <div class="what-we-do-grid">
       {
-        items.map((item) => (
+        copy.items.map((item, index) => (
           <article class="what-we-do-card">
-            <img src={item.icon} class="what-we-do-icon" />
+            <img src={icons[index]} alt="" class="what-we-do-icon" />
             <h3 class="what-we-do-card-title">{item.title}</h3>
             <p class="what-we-do-card-text">{item.description}</p>
           </article>
@@ -150,7 +143,10 @@ const items = [
     </div>
 
     <div class="what-we-do-action">
-      <Button cta="Explore All Services" href="/services" />
+      <Button
+        cta={copy.cta}
+        href={getLocalizedPath("/services", locale)}
+      />
     </div>
   </div>
 </section>

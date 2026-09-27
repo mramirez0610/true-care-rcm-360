@@ -1,5 +1,8 @@
 ---
+import { getLocaleFromPath, getTranslations } from "../../../i18n/translations";
 
+const locale = getLocaleFromPath(Astro.url.pathname);
+const t = getTranslations(locale);
 ---
 
 <style>
@@ -36,7 +39,7 @@
 <div class="hero-image">
   <img
     src="/img/HeroImage.png"
-    alt="A medical billing specialist helping a family"
+    alt={t.home.hero.imageAlt}
     width="780"
     height="543"
     fetchpriority="high"

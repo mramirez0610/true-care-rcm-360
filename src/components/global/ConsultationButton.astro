@@ -1,5 +1,6 @@
 ---
 import Button from "./Button.astro";
+import { getLocaleFromPath, getTranslations } from "../../i18n/translations";
 
 interface Props {
   cta?: string;
@@ -7,8 +8,11 @@ interface Props {
   showIcon?: boolean;
 }
 
+const locale = getLocaleFromPath(Astro.url.pathname);
+const t = getTranslations(locale);
+
 const {
-  cta = "Schedule a Free Consultation",
+  cta = t.common.consultation,
   variant = "primary",
   showIcon = true,
 } = Astro.props;
@@ -23,5 +27,5 @@ const consultationUrl = "https://calendly.com/marcoramirezmail/30min";
   variant={variant}
   target="_blank"
   rel="noopener noreferrer"
-  ariaLabel={`${cta} (opens in a new tab)`}
+  ariaLabel={`${cta} (${t.common.opensNewTab})`}
 />

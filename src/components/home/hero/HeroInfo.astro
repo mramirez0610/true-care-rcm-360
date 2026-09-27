@@ -1,6 +1,15 @@
 ---
 import Button from "../../global/Button.astro";
 import ConsultationButton from "../../global/ConsultationButton.astro";
+import {
+  getLocaleFromPath,
+  getLocalizedPath,
+  getTranslations,
+} from "../../../i18n/translations";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+const t = getTranslations(locale);
+const copy = t.home.hero;
 ---
 
 <style>
@@ -14,7 +23,7 @@ import ConsultationButton from "../../global/ConsultationButton.astro";
 
     .header {
       h1 {
-        font-size: clamp(2.5rem, 4.1vw, 4.6rem);
+        font-size: var(--font-size-display);
         line-height: 1.04;
         letter-spacing: -0.035em;
         font-weight: 500;
@@ -129,23 +138,22 @@ import ConsultationButton from "../../global/ConsultationButton.astro";
 
 <section class="hero-block">
   <section class="header">
-    <h1>Turning Claims</h1>
-    <h1>Into Consistent Cash Flow</h1>
+    <h1>{copy.lineOne}</h1>
+    <h1>{copy.lineTwo}</h1>
   </section>
   <div class="divider"></div>
   <section class="sub-header">
-    <h2>
-      Reliable Medical Billing Solutions That Help Your Practice Get Paid Faster
-    </h2>
+    <h2>{copy.subtitle}</h2>
   </section>
   <section class="cta-section">
-    <p>
-      At TrueCare RCM360 Solutions, we take the complexities of billing off your
-      plate so you can focus on what matters most, your patients.
-    </p>
+    <p>{copy.description}</p>
   </section>
   <section class="cta-buttons">
-    <ConsultationButton cta="Get a Free Consultation" />
-    <Button cta="Our Services" href="/services" variant="secondary" />
+    <ConsultationButton cta={t.common.consultationShort} />
+    <Button
+      cta={copy.servicesCta}
+      href={getLocalizedPath("/services", locale)}
+      variant="secondary"
+    />
   </section>
 </section>

@@ -1,22 +1,26 @@
 ---
 const { compact = false } = Astro.props;
+import { getLocaleFromPath, getTranslations } from "../../i18n/translations";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+const t = getTranslations(locale);
 
 const details = [
   {
-    label: "Phone",
+    label: t.common.contact.phone,
     value: "+1 (123) 456 7890",
     href: "tel:+11234567890",
     icon: "phone",
   },
   {
-    label: "Email",
+    label: t.common.contact.email,
     value: "truecarercm360solutions@gmail.com",
     href: "mailto:elizabeth@truecarercm360solutions.com",
     icon: "email",
   },
   {
-    label: "Office Hours",
-    value: "Mon - Fri, 9 AM - 5 PM",
+    label: t.common.contact.officeHours,
+    value: t.common.contact.hours,
     icon: "clock",
   },
 ];

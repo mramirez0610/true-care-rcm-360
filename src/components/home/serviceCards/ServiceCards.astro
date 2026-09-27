@@ -1,5 +1,9 @@
 ---
 import Cards from "./Cards.jsx";
+import { getLocaleFromPath, getTranslations } from "../../../i18n/translations";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+const copy = getTranslations(locale).services;
 ---
 
-<Cards client:load />
+<Cards copy={copy} client:load />

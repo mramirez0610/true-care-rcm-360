@@ -1,31 +1,17 @@
 ---
 import Main from "../layouts/Main.astro";
 import PageHero from "../components/global/PageHero.astro";
-import ConsultationButton from "../components/global/ConsultationButton.astro";
+import PageCTA from "../components/global/PageCTA.astro";
+import { getLocaleFromPath, getTranslations } from "../i18n/translations";
 
-const team = [
-  {
-    name: "Elizabeth",
-    role: "Founder & RCM Specialist",
-    description: [
-      "With more than 25 years of experience in finance, financial analysis, accounts receivable, billing, pricing, and customer operations, I bring a strong analytical foundation and a passion for helping businesses succeed. Throughout my career, I’ve worked across banking, manufacturing, transportation, media, and consumer goods, developing expertise in financial reporting, revenue analysis, billing accuracy, process improvement, and team leadership.",
-      "My experience has taught me that every successful organization depends on efficient systems, accurate financial processes, and attention to detail. After spending decades helping businesses improve operations, analyze financial performance, and strengthen revenue processes, I chose to transition into medical billing to apply those same skills in a field where I can make a meaningful difference.",
-      "Today, I combine my background in finance, accounts receivable, billing, and financial analysis with a commitment to helping healthcare providers maintain healthy revenue cycles. My goal is to provide accurate, dependable medical billing services so providers can spend less time worrying about administrative tasks and more time focusing on their patients.",
-    ],
-    color: "green",
-    image: "/img/Elizabeth.jpeg",
-  },
-  {
-    name: "Lizbeth",
-    role: "Billing & Client Support",
-    description: [
-      "With a master’s degree in sociology, a bachelor’s degree in sociology and psychology, and a minor in Spanish, I bring a unique combination of analytical, research, and interpersonal skills.",
-      "While my focus is medical billing, I also have experience in data analytics and enjoy using data to identify patterns, improve processes, and support better decision-making. Whether that’s through business analytics or evaluating patient outcomes, I believe data can be a powerful tool for helping organizations grow. My goal is to provide accurate, reliable medical billing while bringing an analytical perspective that adds value beyond the day-to-day.",
-    ],
-    color: "navy",
-    image: "/img/Lizbeth.JPG",
-  },
-];
+const locale = getLocaleFromPath(Astro.url.pathname);
+const t = getTranslations(locale);
+const copy = t.about;
+const teamImages = ["/img/Elizabeth.jpeg", "/img/Lizbeth.JPG"];
+const team = copy.members.map((member, index) => ({
+  ...member,
+  image: teamImages[index],
+}));
 ---
 
 <style>
@@ -99,7 +85,7 @@ const team = [
 
       h2 {
         margin: 0;
-        font-size: clamp(1.85rem, 2vw, 2.75rem);
+        font-size: var(--font-size-section);
         line-height: 1.1;
       }
 
@@ -199,7 +185,7 @@ const team = [
 
       h2 {
         margin: 0;
-        font-size: clamp(1.85rem, 2vw, 2.75rem);
+        font-size: var(--font-size-section);
         line-height: 1.1;
       }
     }
@@ -286,57 +272,23 @@ const team = [
 </style>
 
 <Main
-  pageTitle="About Us"
-  description="Meet the TrueCare RCM360 Solutions team and learn how their finance, billing, analytics, and client support experience serves healthcare practices."
+  pageTitle={copy.metaTitle}
+  description={copy.metaDescription}
 >
   <main class="about-page">
     <PageHero
-      eyebrow="About Us"
-      title="Support built around your practice"
-      description="TrueCare RCM360 Solutions supports healthcare practices with organized, dependable revenue cycle management. Our goal is to make the billing process easier to understand and easier to manage."
+      eyebrow={copy.heroEyebrow}
+      title={copy.heroTitle}
+      description={copy.heroDescription}
       image="/img/AboutImage.PNG"
       imagePosition="center 42%"
-    >
-      <ConsultationButton slot="action" showIcon={false} />
-    </PageHero>
-
-    <!-- <section class="about-intro" aria-labelledby="about-title">
-      <div class="container">
-        <h1 id="about-title">About TrueCare RCM360 Solutions</h1>
-        <div class="title-divider" aria-hidden="true"></div>
-
-        <div class="intro-grid">
-          <div
-            class="image-placeholder intro-image"
-            role="img"
-            aria-label="TrueCare team image placeholder"
-          >
-          </div>
-
-          <article class="content-card">
-            <h2>Support built around your practice</h2>
-            <div class="card-divider" aria-hidden="true"></div>
-            <p>
-              TrueCare RCM360 Solutions supports healthcare practices with
-              organized, dependable revenue cycle management. Our goal is to
-              make the billing process easier to understand and easier to
-              manage.
-            </p>
-            <p>
-              This is a starting point for your story. You can add more about
-              your experience, your values, and what led you to create TrueCare
-              as the page develops.
-            </p>
-          </article>
-        </div>
-      </div>
-    </section> -->
+    />
 
     <section class="team-section" aria-labelledby="team-title">
       <div class="container">
         <header class="section-heading">
-          <span class="eyebrow">Meet the people behind the work</span>
-          <h2 id="team-title">Our Team</h2>
+          <span class="eyebrow">{copy.teamEyebrow}</span>
+          <h2 id="team-title">{copy.teamTitle}</h2>
           <div class="title-divider" aria-hidden="true"></div>
         </header>
 
@@ -370,5 +322,11 @@ const team = [
       </div>
     </section>
 
+    <PageCTA
+      title={copy.closingTitle}
+      description={copy.closingDescription}
+      consultationIntro={t.common.consultationIntro}
+      topics={copy.closingTopics}
+    />
   </main>
 </Main>

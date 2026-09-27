@@ -1,19 +1,13 @@
 ---
-const reasons = [
-  {
-    title: "Reliable Communication",
-    description: "Stay informed with clear updates and responsive support.",
-  },
-  {
-    title: "Clean Claim Focus",
-    description: "We work to reduce errors, rejections, and avoidable delays.",
-  },
-  {
-    title: "Practice-Centered Support",
-    description:
-      "Your billing process is handled with your workflow and goals in mind.",
-  },
-];
+import {
+  getLocaleFromPath,
+  getLocalizedPath,
+  getTranslations,
+} from "../../../i18n/translations";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+const t = getTranslations(locale);
+const copy = t.home.whyUs;
 ---
 
 <style>
@@ -37,14 +31,14 @@ const reasons = [
         margin: 0;
         color: var(--primary-white);
         font-family: var(--font-noto-serif);
-        font-size: clamp(2rem, 3.4vw, 3rem);
+        font-size: var(--font-size-home-section);
         line-height: 1.1;
       }
 
       p {
         margin: 0;
         color: var(--primary-white);
-        font-size: clamp(0.95rem, 1.2vw, 1.08rem);
+        font-size: var(--font-size-lead);
         line-height: 1.65;
       }
     }
@@ -122,14 +116,14 @@ const reasons = [
         h3 {
           margin: 0;
           font-family: var(--font-noto-serif);
-          font-size: clamp(1.15rem, 1.55vw, 1.4rem);
+          font-size: var(--font-size-card-title);
           line-height: 1.25;
         }
 
         p {
           margin: 0;
           color: var(--primary-navy);
-          font-size: 0.98rem;
+          font-size: var(--font-size-body);
           line-height: 1.55;
         }
 
@@ -191,20 +185,18 @@ const reasons = [
 <section class="why-us" id="why-us" aria-labelledby="why-us-title">
   <div class="container">
     <header class="intro">
-      <h2 id="why-us-title">Why Practices Choose TrueCare</h2>
+      <h2 id="why-us-title">{copy.title}</h2>
       <div class="title-divider" aria-hidden="true"></div>
-      <p>
-        Billing support you can feel confident in. Your practice deserves
-        billing support that is accurate, organized, and handled with care.
-        TrueCare helps simplify the revenue cycle so you can focus on your
-        patients.
-      </p>
+      <p>{copy.description}</p>
     </header>
 
     <div class="cards">
       {
-        reasons.map((reason) => (
-          <a class="card-link" href="/why-us">
+        copy.items.map((reason) => (
+          <a
+            class="card-link"
+            href={getLocalizedPath("/why-us", locale)}
+          >
             <article class="card">
               <h3>{reason.title}</h3>
               <div class="card-divider" aria-hidden="true" />

@@ -1,30 +1,15 @@
 ---
 import Results from "./Results.astro";
+import { getLocaleFromPath, getTranslations } from "../../../i18n/translations";
 
-const steps = [
-  {
-    title: "Consult",
-    description:
-      "We learn about your practice, billing needs, and current challenges.",
-    icon: "/assets/icons/process/chat.svg",
-  },
-  {
-    title: "Review",
-    description:
-      "We identify claim issues, workflow gaps, and revenue opportunities.",
-    icon: "/assets/icons/process/checklist.svg",
-  },
-  {
-    title: "Onboard",
-    description:
-      "We organize access, payer details, systems, and documentation.",
-    icon: "/assets/icons/process/folder.svg",
-  },
-  {
-    title: "Support",
-    description: "We manage claims, follow-up, payment posting, and reporting.",
-    icon: "/assets/icons/process/headphones.svg",
-  },
+const locale = getLocaleFromPath(Astro.url.pathname);
+const t = getTranslations(locale);
+const copy = t.home.process;
+const icons = [
+  "/assets/icons/process/chat.svg",
+  "/assets/icons/process/checklist.svg",
+  "/assets/icons/process/folder.svg",
+  "/assets/icons/process/headphones.svg",
 ];
 ---
 
@@ -63,13 +48,13 @@ const steps = [
       h2 {
         margin: 0;
         font-family: var(--font-noto-serif);
-        font-size: clamp(2rem, 3.4vw, 3rem);
+        font-size: var(--font-size-home-section);
         line-height: 1.1;
       }
 
       p {
         margin: 0;
-        font-size: clamp(0.95rem, 1.2vw, 1.08rem);
+        font-size: var(--font-size-lead);
         line-height: 1.65;
       }
     }
@@ -283,24 +268,21 @@ const steps = [
 <section class="process" id="process" aria-labelledby="process-title">
   <div class="container">
     <header class="intro">
-      <h2 id="process-title">Our Process</h2>
+      <h2 id="process-title">{copy.title}</h2>
       <div class="title-divider" aria-hidden="true"></div>
-      <p>
-        Getting started is simple. We learn about your practice, review your
-        needs, and build a billing support process that works for you.
-      </p>
+      <p>{copy.description}</p>
     </header>
 
     <ol class="steps">
       {
-        steps.map((step, index) => (
+        copy.steps.map((step, index) => (
           <li class="step">
             <div class="marker">
               <span class="step-number" aria-hidden="true">
                 {String(index + 1).padStart(2, "0")}
               </span>
               <div class="circle">
-                <img class="step-icon" src={step.icon} alt="" />
+                <img class="step-icon" src={icons[index]} alt="" />
                 <h3>{step.title}</h3>
               </div>
             </div>

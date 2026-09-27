@@ -1,6 +1,11 @@
 ---
 import ConsultationButton from "../global/ConsultationButton.astro";
 import ContactDetails from "./ContactDetails.astro";
+import { getLocaleFromPath, getTranslations } from "../../i18n/translations";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+const t = getTranslations(locale);
+const copy = t.common.contact;
 ---
 
 <style>
@@ -30,7 +35,7 @@ import ContactDetails from "./ContactDetails.astro";
         width: fit-content;
         margin: 0;
         font-family: var(--font-noto-serif);
-        font-size: clamp(2rem, 3.4vw, 3rem);
+        font-size: var(--font-size-home-section);
         line-height: 1.1;
         text-decoration: underline;
         text-decoration-color: var(--primary-green);
@@ -41,7 +46,7 @@ import ContactDetails from "./ContactDetails.astro";
       p {
         max-width: 32rem;
         margin: 0;
-        font-size: clamp(0.95rem, 1.2vw, 1.08rem);
+        font-size: var(--font-size-lead);
         line-height: 1.65;
       }
     }
@@ -235,74 +240,71 @@ import ContactDetails from "./ContactDetails.astro";
 <section class="contact" id="contact" aria-labelledby="contact-title">
   <div class="container">
     <header class="intro">
-      <h2 id="contact-title">Contact Us</h2>
-      <p>
-        If you have any questions, please feel free to get in touch with us via
-        phone, email, or the form below.
-      </p>
+      <h2 id="contact-title">{copy.title}</h2>
+      <p>{copy.intro}</p>
     </header>
 
     <div class="columns">
       <div class="panel">
-        <h3>Get in touch</h3>
+        <h3>{copy.getInTouch}</h3>
         <div class="panel-divider" aria-hidden="true"></div>
         <form>
           <div class="field-row">
             <div class="field">
-              <label for="contact-name">Name</label>
+              <label for="contact-name">{copy.name}</label>
               <input
                 id="contact-name"
                 name="name"
                 type="text"
                 autocomplete="name"
-                placeholder="Enter your name *"
+                placeholder={copy.namePlaceholder}
                 required
               />
             </div>
             <div class="field">
-              <label for="contact-phone">Phone Number</label>
+              <label for="contact-phone">{copy.phoneNumber}</label>
               <input
                 id="contact-phone"
                 name="phone"
                 type="tel"
                 autocomplete="tel"
-                placeholder="Enter your phone number *"
+                placeholder={copy.phonePlaceholder}
                 required
               />
             </div>
           </div>
 
           <div class="field">
-            <label for="contact-email">Email</label>
+            <label for="contact-email">{copy.email}</label>
             <input
               id="contact-email"
               name="email"
               type="email"
               autocomplete="email"
-              placeholder="Enter your email address *"
+              placeholder={copy.emailPlaceholder}
               required
             />
           </div>
 
           <div class="field">
-            <label for="contact-message">Message</label>
+            <label for="contact-message">{copy.message}</label>
             <textarea
               id="contact-message"
               name="message"
-              placeholder="Enter your message *"
+              placeholder={copy.messagePlaceholder}
               required></textarea>
           </div>
 
-          <button class="submit" type="submit">Send Message</button>
+          <button class="submit" type="submit">{copy.send}</button>
         </form>
       </div>
 
       <aside class="panel info-panel" aria-labelledby="contact-info-title">
-        <h3 id="contact-info-title">Contact Info</h3>
+        <h3 id="contact-info-title">{copy.info}</h3>
         <div class="panel-divider" aria-hidden="true"></div>
         <ContactDetails />
         <div class="info-cta">
-          <ConsultationButton cta="GET A FREE CONSULTATION" />
+          <ConsultationButton cta={t.common.consultationShort} />
         </div>
       </aside>
     </div>

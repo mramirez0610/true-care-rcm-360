@@ -2,86 +2,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import "./Cards.css";
 
-const services = [
-  {
-    id: "medical-billing-coding",
-    number: "01",
-    title: "Medical Billing & Coding",
-    summary: "Accurate coding. Clean claims.",
-    description:
-      "We help healthcare practices submit accurate claims, reduce billing errors, and keep revenue moving.",
-    bullets: [
-      "Accurate coding support",
-      "Clean claim preparation",
-      "Fewer rejected or denied claims",
-    ],
-  },
-  {
-    id: "claims-submission",
-    number: "02",
-    title: "Claims Submission",
-    summary: "Timely submission. Faster payments.",
-    description:
-      "We handle clean and timely claim submission so your practice gets paid faster with fewer avoidable delays.",
-    bullets: [
-      "Electronic claim submission",
-      "Payer-specific claim review",
-      "Faster payment turnaround",
-    ],
-  },
-  {
-    id: "denial-management",
-    number: "03",
-    title: "Denial Management",
-    summary: "Reducing denials. Recover revenue.",
-    description:
-      "We investigate denials, correct claim issues, and build a tighter process to recover more earned revenue.",
-    bullets: [
-      "Root-cause denial review",
-      "Appeals and corrections",
-      "Recovery-focused follow-up",
-    ],
-  },
-  {
-    id: "payment-posting",
-    number: "04",
-    title: "Payment Posting",
-    summary: "Accurate posting. Up-to-date records.",
-    description:
-      "We keep payment posting accurate and current so your books reflect the real status of every claim.",
-    bullets: [
-      "ERA and manual posting",
-      "Accurate account updates",
-      "Clear payment visibility",
-    ],
-  },
-  {
-    id: "ar-follow-up",
-    number: "05",
-    title: "Accounts Receivable Follow-Up",
-    summary: "Persistent follow-up. Improved collections.",
-    description:
-      "We stay on unpaid claims and aging balances to improve collections and reduce outstanding receivables.",
-    bullets: [
-      "A/R aging review",
-      "Payer follow-up workflows",
-      "Improved collections pace",
-    ],
-  },
-  {
-    id: "credentialing-support",
-    number: "06",
-    title: "Credentialing Support",
-    summary: "Hassle-free credentialing. Stay in-network.",
-    description:
-      "We support provider enrollment and recredentialing so your practice stays compliant and in-network.",
-    bullets: [
-      "Provider enrollment support",
-      "Recredentialing tracking",
-      "Network participation help",
-    ],
-  },
-];
+const serviceCount = 6;
 
 const getCardPosition = (depth, layout = "desktop") => {
   if (layout === "compact" || layout === "tablet") {
@@ -91,7 +12,7 @@ const getCardPosition = (depth, layout = "desktop") => {
       rotation: 0,
       scale: 1,
       opacity: depth === 0 ? 1 : 0,
-      zIndex: services.length - depth,
+      zIndex: serviceCount - depth,
     };
   }
 
@@ -101,7 +22,7 @@ const getCardPosition = (depth, layout = "desktop") => {
     rotation: depth * 1.35,
     scale: 1 - depth * 0.012,
     opacity: 1,
-    zIndex: services.length - depth,
+    zIndex: serviceCount - depth,
   };
 };
 
@@ -112,7 +33,7 @@ const getFannedCardPosition = (depth) => {
     rotation: depth * -1.15,
     scale: 1,
     opacity: 1,
-    zIndex: services.length - depth,
+    zIndex: serviceCount - depth,
   };
 };
 
@@ -123,7 +44,8 @@ const getLayout = () =>
       ? "tablet"
       : "desktop";
 
-export default function Cards() {
+export default function Cards({ copy }) {
+  const services = copy.items;
   const [activeIndex, setActiveIndex] = useState(0);
   const [isDeckOpen, setIsDeckOpen] = useState(false);
   const [canFanDeck, setCanFanDeck] = useState(false);
@@ -435,14 +357,15 @@ export default function Cards() {
     <section className={`services-section ${isDeckOpen ? "is-deck-open" : ""}`}>
       <div className="services-shell">
         <div className="services-copy">
-          <h1 className="services-title">Our Services</h1>
+          <h1 className="services-title">{copy.title}</h1>
           <div className="services-divider" />
-          <p className="services-intro">
-            Comprehensive revenue cycle support designed to keep your practice
-            running smoothly.
-          </p>
+          <p className="services-intro">{copy.intro}</p>
 
-          <div className="services-list" role="tablist" aria-label="Services">
+          <div
+            className="services-list"
+            role="tablist"
+            aria-label={copy.servicesLabel}
+          >
             {services.map((service, index) => {
               const isActive = index === activeIndex;
 
@@ -476,13 +399,13 @@ export default function Cards() {
           <div
             className="services-mobile-selector"
             role="group"
-            aria-label="Choose a service"
+            aria-label={copy.chooseService}
           >
             <button
               type="button"
               className="services-selector-arrow"
               onClick={selectPreviousService}
-              aria-label="Previous service"
+              aria-label={copy.previousService}
             >
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="m15 18-6-6 6-6" />
@@ -500,7 +423,7 @@ export default function Cards() {
               type="button"
               className="services-selector-arrow"
               onClick={selectNextService}
-              aria-label="Next service"
+              aria-label={copy.nextService}
             >
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="m9 18 6-6-6-6" />
@@ -511,7 +434,7 @@ export default function Cards() {
           <div
             className={`services-deck ${isDeckOpen ? "is-open" : ""}`}
             role={isDeckOpen ? "listbox" : undefined}
-            aria-label="Service card deck"
+            aria-label={copy.cardDeck}
           >
             {services.map((service, index) => {
               const isActive = index === activeIndex;
@@ -541,9 +464,9 @@ export default function Cards() {
                   }
                   aria-label={
                     isDeckOpen
-                      ? `Select ${service.title}`
+                      ? `${copy.select} ${service.title}`
                       : isActive && canFanDeck
-                        ? "Open the service card deck"
+                        ? copy.openDeck
                         : undefined
                   }
                   tabIndex={isDeckOpen || (isActive && canFanDeck) ? 0 : -1}

@@ -1,5 +1,13 @@
 ---
 import ContactDetails from "../contact/ContactDetails.astro";
+import {
+  getLocaleFromPath,
+  getLocalizedPath,
+  getTranslations,
+} from "../../i18n/translations";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+const t = getTranslations(locale);
 ---
 
 <style>
@@ -69,9 +77,13 @@ import ContactDetails from "../contact/ContactDetails.astro";
   }
 </style>
 
-<footer aria-label="Site footer">
+<footer aria-label={t.common.footerLabel}>
   <div class="footer-card">
-    <a class="brand" href="/" aria-label="TrueCare RCM360 Solutions home">
+    <a
+      class="brand"
+      href={getLocalizedPath("/", locale)}
+      aria-label={t.common.homeLabel}
+    >
       <img src="/assets/logoComplete.svg" alt="TrueCare RCM360 Solutions" />
     </a>
     <ContactDetails compact />

@@ -1,37 +1,17 @@
 ---
 import Main from "../layouts/Main.astro";
-import Banner from "../components/home/banner/Banner.astro";
 import PageHero from "../components/global/PageHero.astro";
 import Button from "../components/global/Button.astro";
-import ConsultationButton from "../components/global/ConsultationButton.astro";
+import PageCTA from "../components/global/PageCTA.astro";
+import {
+  getLocaleFromPath,
+  getLocalizedPath,
+  getTranslations,
+} from "../i18n/translations";
 
-const reasons = [
-  {
-    number: "01",
-    title: "Attentive, reliable support",
-    description:
-      "We keep communication clear and make it easy to understand what is happening across your revenue cycle.",
-  },
-  {
-    number: "02",
-    title: "A focus on clean claims",
-    description:
-      "Careful review and consistent follow-up help reduce preventable errors, rejections, and delays.",
-  },
-  {
-    number: "03",
-    title: "Support shaped around your practice",
-    description:
-      "We take time to understand your workflow, priorities, and goals before recommending a way forward.",
-  },
-];
-
-const commitments = [
-  "Clear, responsive communication",
-  "Organized and accurate billing support",
-  "Consistent claim and denial follow-up",
-  "Practical reporting you can understand",
-];
+const locale = getLocaleFromPath(Astro.url.pathname);
+const t = getTranslations(locale);
+const copy = t.whyUsPage;
 ---
 
 <style>
@@ -59,7 +39,7 @@ const commitments = [
       display: inline-block;
       margin-bottom: 0.75rem;
       color: var(--primary-green);
-      font-size: clamp(0.82rem, 1vw, 0.95rem);
+      font-size: var(--font-size-eyebrow);
       font-weight: 700;
       letter-spacing: 0.08em;
       line-height: 1.3;
@@ -106,13 +86,13 @@ const commitments = [
         }
 
         h2 {
-          font-size: clamp(1.85rem, 2vw, 2.75rem);
+          font-size: var(--font-size-section);
           text-wrap: balance;
         }
 
         p {
           margin: 0;
-          font-size: clamp(0.95rem, 1.2vw, 1.08rem);
+          font-size: var(--font-size-lead);
         }
       }
 
@@ -159,7 +139,7 @@ const commitments = [
             gap: 0.8rem;
 
             h3 {
-              font-size: clamp(1.35rem, 1.75vw, 1.8rem);
+              font-size: var(--font-size-feature);
               line-height: 1.2;
               text-wrap: balance;
             }
@@ -169,7 +149,7 @@ const commitments = [
               max-width: 34rem;
               margin: 0;
               padding-left: 1.1rem;
-              font-size: 0.98rem;
+              font-size: var(--font-size-body);
               line-height: 1.55;
 
               &::before {
@@ -230,12 +210,12 @@ const commitments = [
 
       .partnership-copy {
         h2 {
-          font-size: clamp(1.85rem, 2vw, 2.75rem);
+          font-size: var(--font-size-section);
         }
 
         p {
           margin: 0;
-          font-size: clamp(0.95rem, 1.2vw, 1.08rem);
+          font-size: var(--font-size-lead);
         }
       }
 
@@ -249,7 +229,7 @@ const commitments = [
           position: relative;
           padding: 1.25rem 0 1.25rem 2rem;
           border-bottom: 1px solid var(--primary-green);
-          font-size: 0.98rem;
+          font-size: var(--font-size-body);
           font-weight: 600;
           line-height: 1.55;
         }
@@ -279,41 +259,39 @@ const commitments = [
 </style>
 
 <Main
-  pageTitle="Why Us"
-  description="See how TrueCare supports healthcare practices with clear communication, careful claim review, consistent follow-up, and practical revenue cycle reporting."
+  pageTitle={copy.metaTitle}
+  description={copy.metaDescription}
 >
   <main class="why-us-page">
     <PageHero
-      eyebrow="Why TrueCare"
-      title="Billing support built on clarity and care."
-      description="Revenue cycle management should give your practice more confidence, not more complexity. We bring an attentive, organized approach to the work behind every claim."
+      eyebrow={copy.heroEyebrow}
+      title={copy.heroTitle}
+      description={copy.heroDescription}
       image="/img/WhyUs.jpg"
       imagePosition="35% 55%"
-    >
-      <ConsultationButton slot="action" showIcon={false} />
-    </PageHero>
+    />
 
     <section class="reasons-section" aria-labelledby="difference-title">
       <div class="container">
         <header class="section-heading">
-          <span class="eyebrow">Our Difference</span>
-          <h2 id="difference-title">What you can expect from us</h2>
+          <span class="eyebrow">{copy.differenceEyebrow}</span>
+          <h2 id="difference-title">{copy.differenceTitle}</h2>
           <div class="divider" aria-hidden="true"></div>
-          <p>
-            A straightforward partnership grounded in dependable work,
-            thoughtful follow-through, and the needs of your practice.
-          </p>
+          <p>{copy.differenceDescription}</p>
           <div class="buttons">
-            <Button cta="Get In Touch" href="/#contact" />
+            <Button
+              cta={copy.contactCta}
+              href={getLocalizedPath("/#contact", locale)}
+            />
           </div>
         </header>
 
         <ol class="reason-list" role="list">
           {
-            reasons.map((reason) => (
+            copy.reasons.map((reason, index) => (
               <li class="reason">
                 <span class="number" aria-hidden="true">
-                  {reason.number}
+                  {String(index + 1).padStart(2, "0")}
                 </span>
                 <div class="reason-copy">
                   <h3>{reason.title}</h3>
@@ -326,38 +304,26 @@ const commitments = [
       </div>
     </section>
 
-    <Banner
-      primaryText="Ready for dependable billing support?"
-      secondaryText="Let’s talk about what that could look like for your practice."
-      textAlign="flex-start"
-      color="#5a7964"
-      justify="space-between"
-      icon="/assets/icons/peopleGroup.svg"
-    >
-      <ConsultationButton
-        slot="action"
-        variant="secondary"
-        showIcon={false}
-      />
-    </Banner>
-
     <section class="partnership-section" aria-labelledby="partnership-title">
       <div class="container partnership-grid">
         <div class="partnership-copy">
-          <span class="eyebrow">The Partnership</span>
-          <h2 id="partnership-title">Your practice stays at the center.</h2>
+          <span class="eyebrow">{copy.partnershipEyebrow}</span>
+          <h2 id="partnership-title">{copy.partnershipTitle}</h2>
           <div class="divider" aria-hidden="true"></div>
-          <p>
-            We view billing as an extension of patient care. Our role is to
-            support the financial health of your practice while respecting the
-            people, systems, and standards that make it yours.
-          </p>
+          <p>{copy.partnershipDescription}</p>
         </div>
 
-        <ul class="commitments" aria-label="Our commitments">
-          {commitments.map((commitment) => <li>{commitment}</li>)}
+        <ul class="commitments" aria-label={copy.commitmentsLabel}>
+          {copy.commitments.map((commitment) => <li>{commitment}</li>)}
         </ul>
       </div>
     </section>
+
+    <PageCTA
+      title={copy.closingTitle}
+      description={copy.closingDescription}
+      consultationIntro={t.common.consultationIntro}
+      topics={copy.closingTopics}
+    />
   </main>
 </Main>
